@@ -29,6 +29,23 @@ android.bootstrap = sdl2
 
 p4a.branch = master
 
+# iOS specific
+ios.kivy_ios_url = https://github.com/kivy/kivy-ios
+ios.kivy_ios_branch = master
+ios.ios_deploy_url = https://github.com/phonegap/ios-deploy
+ios.ios_deploy_branch = 1.7.0
+ios.codesign.allowed = false
+
+# iOS app configuration
+ios.bundle_identifier = org.dudek.caloriecounter
+ios.bundle_name = Licznik Kalorii
+ios.bundle_version = 1.0
+ios.bundle_display_name = Licznik Kalorii
+ios.version = 1.0
+ios.deployment_target = 11.0
+ios.arch = arm64
+ios.orientation = portrait
+
 [buildozer]
 
 log_level = 2

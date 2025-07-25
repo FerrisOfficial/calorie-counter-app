@@ -79,6 +79,65 @@ Aplikacja mobilna na Android do liczenia kalorii napisana w Pythonie z użyciem 
 
 Możesz również skonfigurować automatyczne budowanie APK używając GitHub Actions. Stwórz plik `.github/workflows/build.yml` w swoim repozytorium.
 
+## Tworzenie aplikacji na iOS
+
+### Używając kivy-ios (macOS wymagany)
+
+1. **Zainstaluj zależności systemowe**
+   ```bash
+   brew install autoconf automake libtool pkg-config libffi openssl cmake
+   ```
+
+2. **Zainstaluj kivy-ios**
+   ```bash
+   pip3 install kivy-ios cython==0.29.33
+   ```
+
+3. **Zbuduj zależności iOS**
+   ```bash
+   kivy-ios build python3 kivy pillow
+   ```
+
+4. **Stwórz projekt iOS**
+   ```bash
+   kivy-ios create "Licznik Kalorii" org.dudek.caloriecounter
+   ```
+
+5. **Skopiuj pliki aplikacji**
+   ```bash
+   cp main.py "Licznik Kalorii-ios/"
+   cp calorie_counter_app.py "Licznik Kalorii-ios/"
+   ```
+
+6. **Otwórz w Xcode**
+   ```bash
+   cd "Licznik Kalorii-ios"
+   open "Licznik Kalorii.xcodeproj"
+   ```
+
+### Używając Buildozer na macOS
+
+1. **Zainstaluj Buildozer**
+   ```bash
+   pip3 install buildozer
+   ```
+
+2. **Zbuduj aplikację iOS**
+   ```bash
+   buildozer ios debug
+   ```
+
+### Automatyczne budowanie iOS (GitHub Actions)
+
+Projekt zawiera workflow dla automatycznego budowania na iOS używając GitHub Actions na macOS runners.
+
+### Wymagania dla iOS
+
+- **macOS** (dla lokalnego budowania)
+- **Xcode** zainstalowany
+- **Apple Developer Account** (dla instalacji na prawdziwych urządzeniach)
+- **iOS 11.0+** (minimalna wersja iOS)
+
 ## Struktura aplikacji
 
 ```
