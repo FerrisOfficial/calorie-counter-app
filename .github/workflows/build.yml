@@ -46,7 +46,6 @@ jobs:
     - name: Build APK with Buildozer
       env:
         ANDROID_ACCEPT_SDK_LICENSE: 'y'
-        LIBFFI_AUTOTOOLS_ARGS: '--disable-docs'
       run: |
         yes | buildozer android debug
 
