@@ -1,9 +1,9 @@
 """
-Główny plik aplikacji - alias dla calorie_counter_app.py
+Główny plik aplikacji - alias dla strukturyzowanej aplikacji
 Buildozer domyślnie szuka main.py
 """
 
-from calorie_counter_app import CalorieCounterApp
+from src.main_app import CalorieCounterApp
 
 if __name__ == '__main__':
     CalorieCounterApp().run()

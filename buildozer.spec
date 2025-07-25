@@ -6,6 +6,7 @@ package.domain = org.dudek.caloriecounter
 source.dir = .
 source.include_exts = py,png,jpg,kv,atlas,json
 source.exclude_dirs = tests, bin, venv, __pycache__, .git, .github
+source.include_dirs = src
 version = 1.0
 requirements = python3,kivy==2.1.0,kivymd,pillow,setuptools
 orientation = portrait
