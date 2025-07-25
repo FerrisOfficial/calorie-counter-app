@@ -30,9 +30,19 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y git zip unzip openjdk-17-jdk python3-pip autoconf automake libtool pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev libtinfo6 cmake libffi-dev libssl-dev build-essential gettext
-          pip install --upgrade pip
+          sudo apt-get install -y git zip unzip openjdk-17-jdk python3-pip autoconf automake libtool libtool-bin pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev libtinfo6 cmake libffi-dev libssl-dev build-essential gettext texinfo
+          pip install --upgrade pip setuptools wheel
           pip install buildozer cython==0.29.33
+          
+      - name: Update autotools
+        run: |
+          sudo apt-get install -y autotools-dev autoconf-archive
+          autoreconf --version
+          autoconf --version
+          
+      - name: Install python-for-android with fixes
+        run: |
+          pip install --upgrade git+https://github.com/kivy/python-for-android.git@master
 
       - name: Set up Android SDK
         run: |
@@ -44,6 +54,12 @@ jobs:
         run: |
           rm -rf ~/.buildozer
           mkdir -p ~/.buildozer
+          
+      - name: Clear any existing build artifacts
+        run: |
+          rm -rf bin/
+          rm -rf .buildozer/
+          rm -f buildozer.log
 
       - name: Build APK with Buildozer
         run: |
@@ -52,9 +68,13 @@ jobs:
           export ANDROID_NDK_HOME=$ANDROID_NDK
           export PATH=$PATH:$ANDROID_NDK_HOME
           export JAVA_HOME=/usr/lib/jvm/temurin-17-jdk-amd64
-          export CFLAGS="-Wno-error=format-security"
-          export CPPFLAGS="-Wno-error=format-security"
-          buildozer android debug
+          export CFLAGS="-Wno-error=format-security -Wno-error=incompatible-pointer-types"
+          export CPPFLAGS="-Wno-error=format-security -Wno-error=incompatible-pointer-types"
+          export LDFLAGS="-Wl,--no-as-needed"
+          export AUTORECONF=autoreconf
+          export LIBTOOLIZE=libtoolize
+          export ACLOCAL_PATH="/usr/share/aclocal"
+          buildozer android debug --verbose
 
       - name: Show build logs on failure
         if: failure()
