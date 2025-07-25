@@ -20,7 +20,8 @@ jobs:
 
     - name: Build APK in Docker
       run: |
-        docker run --rm -v ${{ github.workspace }}/bin:/app/bin calorie-counter-builder
+        mkdir -p bin
+        docker run --rm -v ${{ github.workspace }}/bin:/home/builder/app/bin calorie-counter-builder
 
     - name: Upload APK
       uses: actions/upload-artifact@v4

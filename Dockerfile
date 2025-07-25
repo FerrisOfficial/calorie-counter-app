@@ -30,20 +30,33 @@ RUN apt-get update && apt-get install -y \
     ccache \
     curl \
     wget \
+    sudo \
     && rm -rf /var/lib/apt/lists/*
 
 # Set JAVA_HOME
 ENV JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
 
-# Install buildozer and dependencies
-RUN pip3 install --upgrade pip
-RUN pip3 install buildozer cython
+# Create a non-root user
+RUN useradd -m -s /bin/bash builder && \
+    echo "builder ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 
-# Create working directory
-WORKDIR /app
+# Switch to non-root user
+USER builder
+WORKDIR /home/builder
+
+# Install buildozer and dependencies as non-root user
+RUN pip3 install --user --upgrade pip
+RUN pip3 install --user buildozer cython
+
+# Add local bin to PATH
+ENV PATH="/home/builder/.local/bin:$PATH"
+
+# Create app directory
+RUN mkdir -p /home/builder/app
+WORKDIR /home/builder/app
 
 # Copy app files
-COPY . /app
+COPY --chown=builder:builder . /home/builder/app
 
-# Build APK
-CMD ["buildozer", "android", "debug"]
+# Build APK (with automatic yes to root warning)
+CMD echo "y" | buildozer android debug
