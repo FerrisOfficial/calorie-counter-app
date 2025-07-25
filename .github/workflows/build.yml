@@ -17,6 +17,7 @@ jobs:
         run: |
           docker run --rm -v ${{ github.workspace }}:/home/user/app \
             -w /home/user/app \
+            --user $(id -u):$(id -g) \
             ghcr.io/kivy/buildozer \
             android debug
 
