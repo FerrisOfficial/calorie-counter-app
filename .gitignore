@@ -1,0 +1,35 @@
+# Buildozer files
+.buildozer/
+bin/
+build/
+
+# Python files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+.pytest_cache/
+
+# Virtual environments
+venv/
+env/
+ENV/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Data files
+*.json
+calorie_data.json
+
+# Logs
+*.log
