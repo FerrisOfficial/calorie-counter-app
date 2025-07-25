@@ -9,8 +9,8 @@ from kivy.uix.scrollview import ScrollView
 from kivy.graphics import Color, RoundedRectangle
 from kivy.utils import get_color_from_hex
 from kivy.metrics import dp
-from src.widgets import StyledButton
-from src.ui_utils import UIUtils
+from src.StyledButton import StyledButton
+from src.UIUtils import UIUtils
 
 
 class StatsDisplay:

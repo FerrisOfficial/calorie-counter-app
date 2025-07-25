@@ -15,10 +15,13 @@ from kivy.utils import get_color_from_hex
 from kivy.metrics import dp
 from datetime import datetime
 
-from src.data_manager import CalorieDataManager
-from src.widgets import StyledLabel, StyledButton, StyledTextInput, MealCard
-from src.ui_utils import UIUtils
-from src.stats_display import StatsDisplay
+from src.CalorieDataManager import CalorieDataManager
+from src.StyledLabel import StyledLabel
+from src.StyledButton import StyledButton
+from src.StyledTextInput import StyledTextInput
+from src.MealCard import MealCard
+from src.UIUtils import UIUtils
+from src.StatsDisplay import StatsDisplay
 
 
 class CalorieCounterApp(App):
