@@ -23,16 +23,11 @@ android.archs = arm64-v8a
 android.allow_backup = True
 android.logcat_filters = *:S python:D
 
-# Additional settings to fix build issues
 android.skip_update = False
 android.numeric_version = 1
 android.bootstrap = sdl2
-android.gradle_repositories = google(), mavenCentral()
-android.enable_androidx = True
 
-# Build environment fixes
 p4a.branch = master
-p4a.bootstrap = sdl2
 
 [buildozer]
 

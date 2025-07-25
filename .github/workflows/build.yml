@@ -30,16 +30,23 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y git zip unzip openjdk-17-jdk python3-pip autoconf automake libtool libtool-bin pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev libtinfo6 cmake libffi-dev libssl-dev build-essential gettext texinfo
+          sudo apt-get install -y \
+            git zip unzip openjdk-17-jdk python3-pip \
+            autoconf automake libtool libtool-bin libltdl-dev \
+            pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev libtinfo6 \
+            cmake libffi-dev libssl-dev build-essential gettext texinfo \
+            autotools-dev autoconf-archive
           pip install --upgrade pip setuptools wheel
           pip install buildozer cython==0.29.33
-          
-      - name: Update autotools
+
+      - name: Update macros with autoupdate
         run: |
-          sudo apt-get install -y autotools-dev autoconf-archive
-          autoreconf --version
-          autoconf --version
-          
+          find . -name 'configure.ac' -exec autoupdate {} \;
+
+      - name: Generate aclocal.m4 with libtool support
+        run: |
+          aclocal -I . --install || true
+
       - name: Install python-for-android with fixes
         run: |
           pip install --upgrade git+https://github.com/kivy/python-for-android.git@master
@@ -49,12 +56,12 @@ jobs:
           export ANDROID_SDK_ROOT=/opt/android-sdk
           sudo mkdir -p $ANDROID_SDK_ROOT
           sudo chown $USER:$USER $ANDROID_SDK_ROOT
-          
+
       - name: Clean Buildozer cache
         run: |
           rm -rf ~/.buildozer
           mkdir -p ~/.buildozer
-          
+
       - name: Clear any existing build artifacts
         run: |
           rm -rf bin/
