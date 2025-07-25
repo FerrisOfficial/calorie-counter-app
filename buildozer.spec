@@ -29,7 +29,7 @@ orientation = portrait
 fullscreen = 0
 
 # (int) Target Android API, should be as recent as possible.
-android.api = 33
+android.api = 34
 
 # (int) Minimum API your APK will support.
 android.minapi = 21
@@ -38,7 +38,7 @@ android.minapi = 21
 android.ndk = 25b
 
 # (int) Android SDK version to use
-android.sdk = 33
+android.sdk = 34
 
 # (list) Android application meta-data to set (key=value format)
 android.meta_data = com.google.android.gms.version=@integer/google_play_services_version
