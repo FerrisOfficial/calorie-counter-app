@@ -22,7 +22,7 @@ jobs:
     - name: Install system dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install -y git zip unzip openjdk-17-jdk python3-pip autoconf libtool pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev cmake libffi-dev libssl-dev build-essential
+        sudo apt-get install -y git zip unzip openjdk-17-jdk python3-pip autoconf autogen automake libtool pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev cmake libffi-dev libssl-dev build-essential ccache m4
 
     - name: Setup Java
       uses: actions/setup-java@v4
@@ -44,6 +44,9 @@ jobs:
           ${{ runner.os }}-buildozer-
 
     - name: Build APK with Buildozer
+      env:
+        ANDROID_ACCEPT_SDK_LICENSE: 'y'
+        LIBFFI_AUTOTOOLS_ARGS: '--disable-docs'
       run: |
         yes | buildozer android debug
 
