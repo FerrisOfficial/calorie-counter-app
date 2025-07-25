@@ -70,11 +70,16 @@ jobs:
           # Update the project
           kivy-ios update "Licznik Kalorii-ios"
           
-      - name: Archive iOS app
+      - name: Create IPA for AltStore
         run: |
           cd "Licznik Kalorii-ios"
-          # Build for simulator
-          xcodebuild -project "Licznik Kalorii.xcodeproj" -scheme "Licznik Kalorii" -destination "generic/platform=iOS Simulator" build
+          # Build for device (unsigned)
+          xcodebuild -project "Licznik Kalorii.xcodeproj" -scheme "Licznik Kalorii" -configuration Release -destination "generic/platform=iOS" CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO build
+          
+          # Create IPA
+          mkdir -p Payload
+          cp -r build/Release-iphoneos/"Licznik Kalorii.app" Payload/
+          zip -r "Licznik_Kalorii.ipa" Payload/
           
       - name: Upload iOS artifacts
         uses: actions/upload-artifact@v4
@@ -82,5 +87,6 @@ jobs:
         with:
           name: ios-project
           path: |
+            Licznik Kalorii-ios/Licznik_Kalorii.ipa
             Licznik Kalorii-ios/
             **/*.log

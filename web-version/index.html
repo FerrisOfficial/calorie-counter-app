@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Licznik Kalorii</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Licznik Kalorii">
+    <link rel="apple-touch-icon" href="icon-192.png">
+    <link rel="manifest" href="manifest.json">
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: white;
+        }
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            background: rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .input-group {
+            margin-bottom: 20px;
+        }
+        input, button {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+        button {
+            background: #4CAF50;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #45a049;
+        }
+        .stats {
+            background: rgba(255,255,255,0.2);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        .meal-item {
+            background: rgba(255,255,255,0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .delete-btn {
+            background: #f44336;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: auto;
+            margin: 0;
+        }
+        .install-prompt {
+            background: rgba(0,0,0,0.3);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🍎 Licznik Kalorii</h1>
+            <p>Śledź swoje dzienne kalorie</p>
+        </div>
+
+        <div class="install-prompt" id="installPrompt" style="display: none;">
+            <p>📱 Dodaj aplikację do ekranu głównego!</p>
+            <button onclick="hideInstallPrompt()">OK</button>
+        </div>
+
+        <div class="stats">
+            <div><strong>Cel dzienny:</strong> 2000 kcal</div>
+            <div><strong>Spożyte:</strong> <span id="consumed">0</span> kcal</div>
+            <div><strong>Pozostało:</strong> <span id="remaining">2000</span> kcal</div>
+        </div>
+
+        <div class="input-group">
+            <input type="text" id="mealName" placeholder="Nazwa posiłku (np. Śniadanie)">
+            <input type="number" id="calories" placeholder="Kalorie (np. 350)">
+            <button onclick="addMeal()">Dodaj Posiłek</button>
+        </div>
+
+        <div id="mealsList"></div>
+
+        <button onclick="showWeeklyStats()">Pokaż Statystyki Tygodniowe</button>
+    </div>
+
+    <script>
+        // PWA Installation
+        let deferredPrompt;
+        
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            document.getElementById('installPrompt').style.display = 'block';
+        });
+
+        function hideInstallPrompt() {
+            document.getElementById('installPrompt').style.display = 'none';
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+            }
+        }
+
+        // App Logic
+        let meals = JSON.parse(localStorage.getItem('calorieData') || '{}');
+        const today = new Date().toISOString().split('T')[0];
+
+        function updateStats() {
+            const todayMeals = meals[today] || [];
+            const consumed = todayMeals.reduce((sum, meal) => sum + meal.calories, 0);
+            const remaining = Math.max(0, 2000 - consumed);
+            
+            document.getElementById('consumed').textContent = consumed;
+            document.getElementById('remaining').textContent = remaining;
+        }
+
+        function renderMeals() {
+            const todayMeals = meals[today] || [];
+            const mealsList = document.getElementById('mealsList');
+            
+            mealsList.innerHTML = todayMeals.map((meal, index) => `
+                <div class="meal-item">
+                    <div>
+                        <strong>${meal.name}</strong><br>
+                        <small>${meal.calories} kcal - ${meal.time}</small>
+                    </div>
+                    <button class="delete-btn" onclick="deleteMeal(${index})">Usuń</button>
+                </div>
+            `).join('');
+        }
+
+        function addMeal() {
+            const name = document.getElementById('mealName').value;
+            const calories = parseInt(document.getElementById('calories').value);
+            
+            if (!name || !calories) {
+                alert('Wypełnij wszystkie pola!');
+                return;
+            }
+
+            if (!meals[today]) meals[today] = [];
+            
+            meals[today].push({
+                name,
+                calories,
+                time: new Date().toLocaleTimeString('pl-PL')
+            });
+
+            localStorage.setItem('calorieData', JSON.stringify(meals));
+            
+            document.getElementById('mealName').value = '';
+            document.getElementById('calories').value = '';
+            
+            updateStats();
+            renderMeals();
+        }
+
+        function deleteMeal(index) {
+            meals[today].splice(index, 1);
+            localStorage.setItem('calorieData', JSON.stringify(meals));
+            updateStats();
+            renderMeals();
+        }
+
+        function showWeeklyStats() {
+            const last7Days = [];
+            for (let i = 6; i >= 0; i--) {
+                const date = new Date();
+                date.setDate(date.getDate() - i);
+                const dateStr = date.toISOString().split('T')[0];
+                const dayMeals = meals[dateStr] || [];
+                const dayCalories = dayMeals.reduce((sum, meal) => sum + meal.calories, 0);
+                last7Days.push({ date: dateStr, calories: dayCalories });
+            }
+            
+            const totalWeek = last7Days.reduce((sum, day) => sum + day.calories, 0);
+            const avgDaily = Math.round(totalWeek / 7);
+            const weeklyGoal = 7 * 2000;
+            const percentage = Math.round((totalWeek / weeklyGoal) * 100);
+            
+            alert(`📊 Statystyki Tygodniowe\n\nŁącznie: ${totalWeek} kcal\nŚrednio dziennie: ${avgDaily} kcal\nRealizacja celu: ${percentage}%`);
+        }
+
+        // Initialize
+        updateStats();
+        renderMeals();
+    </script>
+</body>
+</html>

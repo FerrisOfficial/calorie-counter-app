@@ -34,7 +34,13 @@ ios.kivy_ios_url = https://github.com/kivy/kivy-ios
 ios.kivy_ios_branch = master
 ios.ios_deploy_url = https://github.com/phonegap/ios-deploy
 ios.ios_deploy_branch = 1.7.0
+
+# Code signing (set to false for simulator builds)
 ios.codesign.allowed = false
+# For device builds, you'll need to set these:
+# ios.codesign.allowed = true
+# ios.codesign.debug = "iPhone Developer: Your Name (XXXXXXXXXX)"
+# ios.codesign.release = "iPhone Distribution: Your Name (XXXXXXXXXX)"
 
 # iOS app configuration
 ios.bundle_identifier = org.dudek.caloriecounter
