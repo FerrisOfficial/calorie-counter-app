@@ -13,11 +13,16 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Set up permissions for buildozer
+        run: |
+          sudo chown -R $USER:$USER ${{ github.workspace }}
+          chmod -R 755 ${{ github.workspace }}
+
       - name: Build APK with Buildozer (official GHCR image)
         run: |
           docker run --rm -v ${{ github.workspace }}:/home/user/app \
+            -v /tmp/.buildozer:/home/user/.buildozer \
             -w /home/user/app \
-            --user $(id -u):$(id -g) \
             ghcr.io/kivy/buildozer \
             android debug
 
