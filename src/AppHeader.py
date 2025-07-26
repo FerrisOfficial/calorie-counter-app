@@ -4,8 +4,9 @@ Application header component for the Calorie Counter app
 
 from kivy.uix.boxlayout import BoxLayout
 from kivy.metrics import dp
-from src.StyledLabel import StyledLabel
 
+from src.StyledLabel import StyledLabel
+from src.consts import Colors
 
 class AppHeader(BoxLayout):
     """Header section with app title"""
@@ -28,8 +29,8 @@ class AppHeader(BoxLayout):
             text='Calorie Counter',
             font_size=dp(28),
             bold=True,
-            bg_color='#2196F3',
-            text_color='#FFFFFF',
+            bg_color=Colors.BLUE_HEX,
+            text_color=Colors.BLACK_HEX,
             halign='center',
             valign='middle'
         )

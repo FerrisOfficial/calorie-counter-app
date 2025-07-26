@@ -5,6 +5,7 @@ Custom stats button component for the Calorie Counter app
 from kivy.utils import get_color_from_hex
 from kivy.metrics import dp
 from src.StyledButton import StyledButton
+from src.consts import Colors
 
 
 class StatsButton(StyledButton):
@@ -13,13 +14,13 @@ class StatsButton(StyledButton):
     def __init__(self, stats_callback, **kwargs):
         # Set default properties for stats button
         default_props = {
-            'text': '📊 Stats',
+            'text': 'Stats',
             'size_hint_y': None,
             'height': dp(80),
-            'bg_color': '#2196F3',  # Same blue as stats page
+            'bg_color': Colors.BLUE_HEX,  # Same blue as stats page
             'font_size': dp(18),
             'bold': True,
-            'color': get_color_from_hex('#FFFFFF'),
+            'color': Colors.BLACK,
             'on_press': stats_callback
         }
         

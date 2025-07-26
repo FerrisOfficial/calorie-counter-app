@@ -8,6 +8,8 @@ from kivy.graphics import Color, RoundedRectangle
 from kivy.utils import get_color_from_hex
 from kivy.metrics import dp
 
+from src.consts import Colors
+
 
 class DailyInfoCard(BoxLayout):
     """Card displaying daily calorie information"""
@@ -66,11 +68,11 @@ class DailyInfoCard(BoxLayout):
         )
         
         # Consumed label
-        consumed_color = '#4CAF50' if consumed <= self.data_manager.get_daily_target() else '#FF5722'
+        consumed_color = Colors.GREEN_HEX if consumed <= self.data_manager.get_daily_target() else Colors.RED_HEX
         self.consumed_label = Label(
             text='Consumed: {} kcal [color=4CAF50][b]EATEN[/b][/color]'.format(consumed),
             font_size=dp(16),
-            color=get_color_from_hex(consumed_color),
+            color=consumed_color,
             size_hint_y=0.33,
             bold=True,
             markup=True

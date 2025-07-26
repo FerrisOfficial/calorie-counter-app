@@ -8,6 +8,7 @@ from kivy.uix.label import Label
 from kivy.utils import get_color_from_hex
 from kivy.metrics import dp
 from src.StyledButton import StyledButton
+from src.consts import Colors
 
 
 class UIUtils:
@@ -118,12 +119,12 @@ class UIUtils:
     def get_color_based_on_progress(percentage):
         """Returns color based on progress percentage"""
         if percentage >= 90:
-            return '#4CAF50'  # Green
+            return Colors.RED  
         elif percentage >= 70:
-            return '#FF9800'  # Orange
+            return Colors.ORANGE  
         else:
-            return '#F44336'  # Red
-    
+            return Colors.GREEN
+
     @staticmethod
     def get_background_color_based_on_progress(percentage):
         """Returns background color based on progress percentage"""

@@ -8,6 +8,7 @@ from kivy.graphics import Color, RoundedRectangle
 from kivy.utils import get_color_from_hex
 from kivy.metrics import dp
 from src.StyledTextInput import StyledTextInput
+from src.consts import Colors
 
 
 class AddMealSection(BoxLayout):
@@ -31,7 +32,7 @@ class AddMealSection(BoxLayout):
         
         # Card background
         with self.canvas.before:
-            Color(*get_color_from_hex('#FFFFFF'))
+            Color(*Colors.WHITE_HEX)
             self.add_card_rect = RoundedRectangle(
                 pos=self.pos, 
                 size=self.size, 
@@ -48,7 +49,7 @@ class AddMealSection(BoxLayout):
         self.add_header = Button(
             text='[color=333333][b]+ Add new meal[/b][/color]',
             font_size=dp(18),
-            color=get_color_from_hex('#333333'),
+            color=Colors.GRAY,
             size_hint_y=None,
             height=dp(25),
             markup=True,

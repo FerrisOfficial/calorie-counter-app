@@ -27,6 +27,7 @@ from src.AppHeader import AppHeader
 from src.DailyInfoCard import DailyInfoCard
 from src.AddMealSection import AddMealSection
 from src.MealsHeader import MealsHeader
+from src.consts import Colors
 
 
 class CalorieCounterApp(App):
@@ -45,7 +46,7 @@ class CalorieCounterApp(App):
         
         # Application background
         with main_layout.canvas.before:
-            Color(*get_color_from_hex("#5D9BFFDA"))  # Slightly darker light shade
+            Color(*Colors.GRAYER)  # Slightly darker light shade
             self.bg_rect = RoundedRectangle(pos=main_layout.pos, size=main_layout.size)
         main_layout.bind(size=self.update_bg, pos=self.update_bg)
         

@@ -9,8 +9,10 @@ from kivy.uix.scrollview import ScrollView
 from kivy.graphics import Color, RoundedRectangle
 from kivy.utils import get_color_from_hex
 from kivy.metrics import dp
+
 from src.StyledButton import StyledButton
 from src.UIUtils import UIUtils
+from src.consts import Colors
 
 
 class StatsDisplay:
@@ -59,10 +61,10 @@ class StatsDisplay:
             text='OK Close',
             size_hint_y=None,
             height=dp(50),
-            bg_color='#4CAF50',
+            bg_color=Colors.BLUE,
             font_size=dp(16),
             bold=True,
-            color=get_color_from_hex("#000000")
+            color=Colors.BLACK
         )
         
         content.add_widget(stats_header)
@@ -106,7 +108,7 @@ class StatsDisplay:
             'Consumed', 
             f'{stats["total_calories"]}', 
             'kcal', 
-            '#4CAF50'
+            Colors.GREEN
         )
         
         # Weekly target
@@ -114,7 +116,7 @@ class StatsDisplay:
             'Target', 
             f'{stats["target_weekly"]}', 
             'kcal', 
-            '#2196F3'
+            Colors.BLUE
         )
         
         # Progress percentage
@@ -141,15 +143,15 @@ class StatsDisplay:
         """Creates a statistics box widget"""
         box = BoxLayout(orientation='vertical', size_hint_x=0.33)
         
-        title_label = Label(text=title, font_size=dp(12), color=get_color_from_hex('#666666'))
+        title_label = Label(text=title, font_size=dp(12), color=Colors.GRAY)
         value_label = Label(
             text=value,
             font_size=dp(18),
             bold=True,
-            color=get_color_from_hex(color)
+            color=color
         )
         unit_label = Label(
-            text=f'[color={color.replace("#", "")}]{unit}[/color]',
+            text=f'[color={Colors.to_hex(color).replace("#", "")}]{unit}[/color]',
             font_size=dp(12),
             markup=True
         )
@@ -197,7 +199,7 @@ class StatsDisplay:
         date_layout.add_widget(Label(
             text=day_date,
             font_size=dp(10),
-            color=get_color_from_hex('#666666')
+            color=Colors.GRAY,
         ))
         
         # Meal and calorie information
@@ -206,7 +208,7 @@ class StatsDisplay:
             text='{} kcal'.format(day_data['calories']),
             font_size=dp(16),
             bold=True,
-            color=get_color_from_hex(progress_color),
+            color=progress_color,
             halign='left'
         ))
         
@@ -214,7 +216,7 @@ class StatsDisplay:
         info_layout.add_widget(Label(
             text=meals_text,
             font_size=dp(12),
-            color=get_color_from_hex('#666666'),
+            color=Colors.GRAY,
             halign='left'
         ))
         
@@ -223,7 +225,7 @@ class StatsDisplay:
             text='{}%'.format(int(goal_percentage)),
             font_size=dp(14),
             bold=True,
-            color=get_color_from_hex(progress_color),
+            color=progress_color,
             size_hint_x=0.25
         )
         

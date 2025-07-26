@@ -5,6 +5,8 @@ Clear all button component for the Calorie Counter app
 from src.StyledButton import StyledButton
 from kivy.metrics import dp
 
+from src.consts import Colors
+
 
 class ClearAllButton(StyledButton):
     """Styled button for clearing all meals with red styling"""
@@ -14,7 +16,7 @@ class ClearAllButton(StyledButton):
         default_props = {
             'text': 'Clear all',
             'size_hint_x': 0.25,
-            'bg_color': '#FF1744',  # Red color for delete action
+            'bg_color': Colors.RED_HEX,  # Red color for delete action
             'font_size': dp(12),
             'bold': True,
             'on_press': clear_callback
