@@ -1,13 +1,13 @@
 """
-Custom meal card widget for the Calorie Counter app
+Meal card component for the Calorie Counter app
 """
 
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
-from kivy.uix.button import Button
 from kivy.graphics import Color, RoundedRectangle
 from kivy.utils import get_color_from_hex
 from kivy.metrics import dp
+from src.MealDeleteButton import MealDeleteButton
 
 
 class MealCard(BoxLayout):
@@ -59,27 +59,8 @@ class MealCard(BoxLayout):
         meal_info_layout.add_widget(meal_name)
         meal_info_layout.add_widget(meal_details)
         
-        # Delete button - rounded
-        delete_btn = Button(
-            text='DELETE',
-            size_hint_x=None,
-            width=dp(80),
-            background_normal='',
-            background_color=[0, 0, 0, 0],  # Transparent - custom background
-            color=get_color_from_hex('#FFFFFF'),
-            font_size=dp(12),
-            on_press=delete_callback
-        )
-        
-        # Add rounded background to delete button
-        with delete_btn.canvas.before:
-            Color(*get_color_from_hex('#F44336'))
-            self.delete_btn_rect = RoundedRectangle(
-                pos=delete_btn.pos, 
-                size=delete_btn.size, 
-                radius=[dp(15)]
-            )
-        delete_btn.bind(size=self.update_delete_btn, pos=self.update_delete_btn)
+        # Delete button using the new component
+        delete_btn = MealDeleteButton(delete_callback)
         
         self.add_widget(icon_label)
         self.add_widget(meal_info_layout)
@@ -88,8 +69,3 @@ class MealCard(BoxLayout):
     def update_rect(self, *args):
         self.rect.pos = self.pos
         self.rect.size = self.size
-    
-    def update_delete_btn(self, *args):
-        """Updates rounded background of delete button"""
-        self.delete_btn_rect.pos = args[0].pos
-        self.delete_btn_rect.size = args[0].size
