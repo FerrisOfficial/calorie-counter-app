@@ -47,7 +47,7 @@ class UIUtils:
         msg_label = Label(
             text=message,
             font_size=dp(25),
-            color=get_color_from_hex("#898989"),
+            color=get_color_from_hex("#EF0000"),
             text_size=(None, None),
             halign='center',
             valign='middle'
@@ -67,7 +67,7 @@ class UIUtils:
                 height=dp(50),
                 bg_color=title_color,
                 font_size=dp(16),
-                color=get_color_from_hex('#000000')
+                color=Colors.BLACK
             )
             
             confirm_btn = StyledButton(
@@ -76,7 +76,7 @@ class UIUtils:
                 height=dp(50),
                 bg_color=title_color,
                 font_size=dp(16),
-                color=get_color_from_hex('#000000')
+                color=Colors.BLACK
             )
             
             buttons_layout.add_widget(cancel_btn)
@@ -90,7 +90,7 @@ class UIUtils:
                 height=dp(50),
                 bg_color=title_color,
                 font_size=dp(16),
-                color=get_color_from_hex('#000000')
+                color=Colors.BLACK
             )
             content.add_widget(close_btn)
         

@@ -194,7 +194,7 @@ class StatsDisplay:
             text=day_name,
             font_size=dp(12),
             bold=True,
-            color=get_color_from_hex('#333333')
+            color=Colors.GRAYER
         ))
         date_layout.add_widget(Label(
             text=day_date,

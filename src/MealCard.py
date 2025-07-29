@@ -8,6 +8,7 @@ from kivy.graphics import Color, RoundedRectangle
 from kivy.utils import get_color_from_hex
 from kivy.metrics import dp
 from src.MealDeleteButton import MealDeleteButton
+from src.consts import Colors
 
 
 class MealCard(BoxLayout):
@@ -41,7 +42,7 @@ class MealCard(BoxLayout):
             text=meal_data['name'],
             font_size=dp(16),
             bold=True,
-            color=get_color_from_hex('#333333'),
+            color=Colors.BLACK,
             halign='left',
             size_hint_y=0.6
         )
@@ -50,7 +51,7 @@ class MealCard(BoxLayout):
         meal_details = Label(
             text='{} • {} kcal'.format(meal_data['time'], meal_data['calories']),
             font_size=dp(12),
-            color=get_color_from_hex('#666666'),
+            color=Colors.GRAY,
             halign='left',
             size_hint_y=0.4
         )

@@ -42,7 +42,7 @@ class CalorieCounterApp(App):
     def build(self):
         """Builds the main application interface with beautiful design"""
         # Main layout with gradient background
-        main_layout = FloatLayout()
+        main_layout = BoxLayout(orientation='vertical')
         
         # Application background
         with main_layout.canvas.before:
@@ -50,10 +50,20 @@ class CalorieCounterApp(App):
             self.bg_rect = RoundedRectangle(pos=main_layout.pos, size=main_layout.size)
         main_layout.bind(size=self.update_bg, pos=self.update_bg)
         
-        # ScrollView for all content
+        # Fixed header at the top with padding
+        header_container = BoxLayout(
+            orientation='vertical',
+            size_hint_y=None,
+            height=dp(100),  # Fixed height for header container
+            padding=[dp(20), dp(10), dp(20), dp(5)]  # left, top, right, bottom padding
+        )
+        header_layout = self._create_header()
+        header_container.add_widget(header_layout)
+        main_layout.add_widget(header_container)
+        
+        # ScrollView for scrollable content
         scroll = ScrollView(
-            pos_hint={'center_x': 0.5, 'center_y': 0.5},
-            size_hint=(0.95, 0.95)
+            size_hint=(1, 1)  # Takes remaining space
         )
         
         content_layout = BoxLayout(
@@ -63,9 +73,6 @@ class CalorieCounterApp(App):
             size_hint_y=None
         )
         content_layout.bind(minimum_height=content_layout.setter('height'))
-        
-        # Header with title and icon
-        header_layout = self._create_header()
         
         # Daily information card
         self.daily_info_card = self._create_daily_info_card()
@@ -82,11 +89,14 @@ class CalorieCounterApp(App):
         )
         self.meals_layout.bind(minimum_height=self.meals_layout.setter('height'))
         
+        # Ensure meals_layout is transparent
+        with self.meals_layout.canvas.before:
+            Color(0, 0, 0, 0)  # Completely transparent
+        
         # Weekly statistics button - rounded
         weekly_stats_btn = self._create_stats_button()
         
-        # Add all elements to main layout
-        content_layout.add_widget(header_layout)
+        # Add scrollable elements to content layout (header is already added to main_layout)
         content_layout.add_widget(self.daily_info_card)
         content_layout.add_widget(self.add_meal_card)
         content_layout.add_widget(self.meals_header)
@@ -128,7 +138,20 @@ class CalorieCounterApp(App):
     
     def _create_meals_header(self):
         """Creates the meals list header"""
-        return MealsHeader(lambda x: self.meal_manager.clear_all_meals(x) if hasattr(self, 'meal_manager') else None)
+        return MealsHeader(
+            self._clear_all_meals,
+            self._add_meal
+        )
+    
+    def _clear_all_meals(self, instance):
+        """Callback for clear all meals button"""
+        if hasattr(self, 'meal_manager'):
+            self.meal_manager.clear_all_meals(instance)
+    
+    def _add_meal(self, instance):
+        """Callback for add meal button"""
+        if hasattr(self, 'meal_manager'):
+            self.meal_manager.add_meal(instance)
     
     def _create_stats_button(self):
         """Creates the weekly statistics button"""

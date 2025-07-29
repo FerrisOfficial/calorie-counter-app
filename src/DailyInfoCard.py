@@ -30,7 +30,7 @@ class DailyInfoCard(BoxLayout):
         default_props.update(kwargs)
         super().__init__(**default_props)
         
-        # Card background with shadow
+        # Card background (bez cienia)
         with self.canvas.before:
             Color(*get_color_from_hex('#FFFFFF'))
             self.daily_card_rect = RoundedRectangle(
@@ -38,15 +38,9 @@ class DailyInfoCard(BoxLayout):
                 size=self.size, 
                 radius=[dp(20)]
             )
-            # Shadow
-            Color(0, 0, 0, 0.1)
-            RoundedRectangle(
-                pos=(self.x + dp(2), self.y - dp(2)), 
-                size=self.size, 
-                radius=[dp(20)]
-            )
+
         self.bind(size=self.update_card, pos=self.update_card)
-        
+
         # Create labels
         self._create_labels()
         
@@ -62,7 +56,7 @@ class DailyInfoCard(BoxLayout):
                 self.data_manager.get_daily_target()
             ),
             font_size=dp(16),
-            color=get_color_from_hex('#333333'),
+            color=Colors.GRAYER,
             size_hint_y=0.33,
             markup=True
         )

@@ -21,7 +21,7 @@ class AddMealSection(BoxLayout):
         default_props = {
             'orientation': 'vertical',
             'size_hint_y': None,
-            'height': dp(100),
+            'height': dp(70),  # Reduced height since no header button
             'padding': [dp(10), dp(5), dp(10), dp(10)],
             'spacing': dp(5)
         }
@@ -41,24 +41,7 @@ class AddMealSection(BoxLayout):
         self.bind(size=self.update_card, pos=self.update_card)
         
         # Create UI elements
-        self._create_header()
         self._create_inputs()
-    
-    def _create_header(self):
-        """Creates the section header"""
-        self.add_header = Button(
-            text='[color=333333][b]+ Add new meal[/b][/color]',
-            font_size=dp(18),
-            color=Colors.GRAY,
-            size_hint_y=None,
-            height=dp(25),
-            markup=True,
-            background_normal='',
-            background_color=[0, 0, 0, 0],  # Transparent
-            on_press=self.add_meal_callback
-        )
-        
-        self.add_widget(self.add_header)
     
     def _create_inputs(self):
         """Creates the input fields"""
