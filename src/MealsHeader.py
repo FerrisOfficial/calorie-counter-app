@@ -57,7 +57,7 @@ class MealsHeader(BoxLayout):
                 text='+ Add meal',
                 size_hint_x=0.75,  # 75% of total width
                 bg_color=Colors.GREEN_HEX,  # Green color for add action
-                font_size=dp(12),
+                font_size=dp(20),
                 bold=True,
                 on_press=self.add_meal_callback
             )

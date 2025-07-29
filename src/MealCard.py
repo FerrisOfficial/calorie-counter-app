@@ -29,7 +29,7 @@ class MealCard(BoxLayout):
         
         # Meal icon (simple symbol)
         icon_label = Label(
-            text='[color=4CAF50][size=20][b]MEAL[/b][/size][/color]',
+            text='[color=4CAF50][size=20][b]M[/b][/size][/color]',
             size_hint_x=None,
             width=dp(40),
             markup=True

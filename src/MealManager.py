@@ -101,7 +101,7 @@ class MealManager:
         )
         
         empty_label = Label(
-            text='[color=999999]MEAL No meals for today\nAdd your first meal![/color]',
+            text='[color=999999]No meals for today\nAdd your first meal![/color]',
             font_size=dp(14),
             halign='center',
             markup=True
