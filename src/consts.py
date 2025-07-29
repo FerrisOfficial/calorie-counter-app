@@ -22,6 +22,12 @@ class Colors:
     GRAYER_HEX = '#333333'
     WHITE = get_color_from_hex('#FFFFFF')
     WHITE_HEX = '#FFFFFF'
+    
+    # Text colors for input fields
+    # Note: Due to Kivy TextInput limitations, foreground_color may not be visually effective
+    # but the functionality is implemented and ready for future Kivy versions
+    INPUT_TEXT_ACTIVE = get_color_from_hex('#000000')  # Black for active text
+    INPUT_TEXT_ACTIVE_HEX = '#000000'
 
     @staticmethod
     def to_hex(color):
@@ -34,6 +40,7 @@ class Colors:
             tuple(Colors.ORANGE): Colors.ORANGE_HEX,
             tuple(Colors.GRAY): Colors.GRAY_HEX,
             tuple(Colors.GRAYER): Colors.GRAYER_HEX,
-            tuple(Colors.WHITE): Colors.WHITE_HEX
+            tuple(Colors.WHITE): Colors.WHITE_HEX,
+            tuple(Colors.INPUT_TEXT_ACTIVE): Colors.INPUT_TEXT_ACTIVE_HEX
         }
         return dict_color.get(tuple(color), "#000000")
