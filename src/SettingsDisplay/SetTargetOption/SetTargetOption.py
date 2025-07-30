@@ -5,6 +5,7 @@ from kivy.uix.textinput import TextInput
 from kivy.uix.spinner import Spinner
 from kivy.uix.popup import Popup
 from kivy.uix.scrollview import ScrollView
+from kivy.metrics import dp
 from src.Styled.BaseSettingsOption import BaseSettingsOption
 from src.Styled.StyledButton import StyledButton
 from src.Styled.StyledTextInput import StyledTextInput
@@ -49,7 +50,7 @@ class SetTargetOption(BaseSettingsOption):
         self.set_button = StyledButton(
             text="Set",
             size_hint_x=0.4,
-            height=40,
+            height=dp(40),
             bg_color=Colors.ORANGE
         )
         self.set_button.bind(on_press=self.open_target_popup)
@@ -98,7 +99,7 @@ class SetTargetOption(BaseSettingsOption):
         separator = StyledLabel(
             text="OR",
             size_hint_y=None,
-            height=30,
+            height=dp(30),
             color=Colors.GRAY,
             text_size=(None, None),
             halign='center',
@@ -125,9 +126,9 @@ class SetTargetOption(BaseSettingsOption):
         button_layout = BoxLayout(
             orientation='horizontal',
             size_hint_y=None,
-            height=50,
-            spacing=10,
-            padding=[20, 10, 20, 10]  # taki sam padding z góry i z dołu
+            height=dp(50),
+            spacing=dp(10),
+            padding=[dp(20), dp(10), dp(20), dp(10)]  # taki sam padding z góry i z dołu
         )
 
         cancel_btn = StyledButton(text="Cancel", bg_color=Colors.GRAY)
@@ -147,14 +148,14 @@ class SetTargetOption(BaseSettingsOption):
         section = BoxLayout(
             orientation='vertical',
             size_hint_y=None,
-            height=100,
-            spacing=10
+            height=dp(100),
+            spacing=dp(10)
         )
         
         title = StyledLabel(
             text="Manual Target Setting",
             size_hint_y=None,
-            height=30,
+            height=dp(30),
             font_size='16sp',
             bold=True
         )
@@ -163,22 +164,23 @@ class SetTargetOption(BaseSettingsOption):
         input_layout = BoxLayout(
             orientation='horizontal',
             size_hint_y=None,
-            height=40,
-            spacing=10
+            height=dp(40),
+            spacing=dp(10)
         )
         
-        input_layout.add_widget(StyledLabel(text="Target:", size_hint_x=0.3))
+        input_layout.add_widget(StyledLabel(text="Target:", size_hint_x=0.3, height=dp(40)))
         
         self.manual_input = StyledTextInput(
             text=str(self.current_target),
             input_filter='int',
             multiline=False,
             size_hint_x=0.5,
-            halign='center'
+            halign='center',
+            height=dp(40)
         )
         input_layout.add_widget(self.manual_input)
         
-        input_layout.add_widget(StyledLabel(text="kcal", size_hint_x=0.2))
+        input_layout.add_widget(StyledLabel(text="kcal", size_hint_x=0.2, height=dp(40)))
         
         section.add_widget(input_layout)
         
@@ -189,7 +191,7 @@ class SetTargetOption(BaseSettingsOption):
         section = BoxLayout(
             orientation='vertical',
             size_hint_y=None,
-            spacing=10,
+            spacing=dp(10),
             padding=[0, 0, 0, 0]  # Dodany padding dla spójności
         )
         section.bind(minimum_height=section.setter('height'))
@@ -197,7 +199,7 @@ class SetTargetOption(BaseSettingsOption):
         title = StyledLabel(
             text="Calculate Based on Personal Data",
             size_hint_y=None,
-            height=30,
+            height=dp(30),
             font_size='16sp',
             bold=True,
             text_size=(None, None),
@@ -209,7 +211,7 @@ class SetTargetOption(BaseSettingsOption):
         # Formularz z danymi osobowymi
         form_layout = BoxLayout(
             orientation='vertical',
-            spacing=8,
+            spacing=dp(8),
             size_hint_y=None
         )
         form_layout.bind(minimum_height=form_layout.setter('height'))
@@ -220,12 +222,12 @@ class SetTargetOption(BaseSettingsOption):
         form_layout.add_widget(age_row['layout'])
         
         # Płeć
-        gender_row = BoxLayout(orientation='horizontal', size_hint_y=None, height=40, spacing=10)
+        gender_row = BoxLayout(orientation='horizontal', size_hint_y=None, height=dp(40), spacing=dp(10))
         gender_label = StyledLabel(
             text="Gender:", 
             size_hint_x=0.35,  # Ujednolicone z 0.3 do 0.35
             size_hint_y=None,
-            height=40,
+            height=dp(40),
             text_size=(None, None),
             halign='left',
             valign='middle'
@@ -237,7 +239,7 @@ class SetTargetOption(BaseSettingsOption):
             values=['Male', 'Female'],
             size_hint_x=0.45,  # Zmniejszone z 0.65 do 0.45 (tak jak pola tekstowe)
             size_hint_y=None,
-            height=40
+            height=dp(40)
         )
         gender_row.add_widget(self.gender_spinner)
         
@@ -246,7 +248,7 @@ class SetTargetOption(BaseSettingsOption):
             text="", 
             size_hint_x=0.2,  # Tak jak jednostki w innych polach
             size_hint_y=None,
-            height=40,
+            height=dp(40),
             bg_color='#00000000'  # Przezroczyste tło
         )
         gender_row.add_widget(gender_spacer)
@@ -263,12 +265,12 @@ class SetTargetOption(BaseSettingsOption):
         form_layout.add_widget(weight_row['layout'])
         
         # Poziom aktywności
-        activity_row = BoxLayout(orientation='horizontal', size_hint_y=None, height=40, spacing=10)
+        activity_row = BoxLayout(orientation='horizontal', size_hint_y=None, height=dp(40), spacing=dp(10))
         activity_label = StyledLabel(
             text="Activity:", 
             size_hint_x=0.35,  # Ujednolicone z 0.3 do 0.35
             size_hint_y=None,
-            height=40,
+            height=dp(40),
             text_size=(None, None),
             halign='left',
             valign='middle'
@@ -280,7 +282,7 @@ class SetTargetOption(BaseSettingsOption):
             values=['Sedentary', 'Light', 'Moderate', 'Active', 'Very Active'],
             size_hint_x=0.45,  # Zmniejszone z 0.65 do 0.45 (tak jak pola tekstowe)
             size_hint_y=None,
-            height=40
+            height=dp(40)
         )
         activity_row.add_widget(self.activity_spinner)
         
@@ -289,7 +291,7 @@ class SetTargetOption(BaseSettingsOption):
             text="", 
             size_hint_x=0.2,  # Tak jak jednostki w innych polach
             size_hint_y=None,
-            height=40,
+            height=dp(40),
             bg_color='#00000000'  # Przezroczyste tło
         )
         activity_row.add_widget(activity_spacer)
@@ -305,7 +307,7 @@ class SetTargetOption(BaseSettingsOption):
         calculate_btn = StyledButton(
             text="Calculate Target",
             size_hint_y=None,
-            height=40,
+            height=dp(40),
             bg_color=Colors.BLUE
         )
         calculate_btn.bind(on_press=self.calculate_target)
@@ -315,7 +317,7 @@ class SetTargetOption(BaseSettingsOption):
         self.calculated_result = StyledLabel(
             text="Fill the form and click Calculate",
             size_hint_y=None,
-            height=50,  # Zwiększona wysokość dla większego tekstu
+            height=dp(50),  # Zwiększona wysokość dla większego tekstu
             text_size=(None, None),
             halign='center',
             valign='middle'
@@ -331,15 +333,15 @@ class SetTargetOption(BaseSettingsOption):
         row_layout = BoxLayout(
             orientation='horizontal',
             size_hint_y=None,
-            height=40,
-            spacing=10
+            height=dp(40),
+            spacing=dp(10)
         )
         
         label = StyledLabel(
             text=label_text, 
             size_hint_x=0.35,  # Ujednolicone z 0.3 do 0.35
             size_hint_y=None,
-            height=40,
+            height=dp(40),
             text_size=(None, None),
             halign='left',
             valign='middle'
@@ -351,7 +353,7 @@ class SetTargetOption(BaseSettingsOption):
             multiline=False,
             size_hint_x=0.45,
             size_hint_y=None,
-            height=40,
+            height=dp(40),
             halign='center'
         )
         row_layout.add_widget(text_input)
@@ -360,7 +362,7 @@ class SetTargetOption(BaseSettingsOption):
             text=unit_text, 
             size_hint_x=0.2,  # Pozostaje 0.2
             size_hint_y=None,
-            height=40,
+            height=dp(40),
             text_size=(None, None),
             halign='left',
             valign='middle'
@@ -374,15 +376,15 @@ class SetTargetOption(BaseSettingsOption):
         row_layout = BoxLayout(
             orientation='horizontal',
             size_hint_y=None,
-            height=40,
-            spacing=10
+            height=dp(40),
+            spacing=dp(10)
         )
         
         label = StyledLabel(
             text=label_text, 
             size_hint_x=0.35,  # Zmienione z 0.4 do 0.35 dla ujednolicenia
             size_hint_y=None,
-            height=40,
+            height=dp(40),
             text_size=(None, None),
             halign='left',
             valign='middle'
@@ -394,7 +396,7 @@ class SetTargetOption(BaseSettingsOption):
             multiline=False,
             size_hint_x=0.35,
             size_hint_y=None,
-            height=40,
+            height=dp(40),
             halign='center'
         )
         row_layout.add_widget(text_input)
@@ -403,7 +405,7 @@ class SetTargetOption(BaseSettingsOption):
             text=unit_text, 
             size_hint_x=0.3,  # Pozostaje 0.3
             size_hint_y=None,
-            height=40,
+            height=dp(40),
             text_size=(None, None),
             halign='left',
             valign='middle'
