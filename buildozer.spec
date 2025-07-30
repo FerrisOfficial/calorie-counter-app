@@ -1,8 +1,8 @@
 [app]
 
-title = Licznik Kalorii
-package.name = caloriecounter
-package.domain = org.dudek.caloriecounter
+title = Licznik Kalorii Dev
+package.name = caloriecounterdev
+package.domain = org.dudek.caloriecounterdev
 source.dir = .
 source.include_exts = py,png,jpg,kv,atlas,json
 source.exclude_dirs = tests, bin, venv, __pycache__, .git, .github
