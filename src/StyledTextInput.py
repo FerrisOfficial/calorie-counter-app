@@ -19,25 +19,29 @@ class StyledTextInput(TextInput):
         self.background_active = ''
         self.cursor_color = get_color_from_hex('#4CAF50')
         self.halign = halign
-        self.valign = 'center'  # Vertical centering
         self.is_focused = False
-        
         # Disable markup to avoid display issues
         self.markup = False
-        
         # Set colors based on content
         self.default_foreground_color = Colors.LIGHT_GRAY  # Light grey for hint text
         self.active_foreground_color = Colors.INPUT_TEXT_ACTIVE
         self.foreground_color = self.default_foreground_color
-        
         # Track if field has content for visual feedback
         self.has_content = False
-        
         # Settings for centering
         self.bind(size=self.update_text_size)
         self.bind(size=self.update_graphics, pos=self.update_graphics)
         self.bind(focus=self.on_focus_change)
         self.bind(text=self.on_text_change)
+        # Ustaw padding_y: dolny większy niż górny dla lepszego centrowania
+        self.padding_y = [13, 5]
+        # Spróbuj ustawić valign jeśli obsługiwane przez TextInput
+        try:
+            self.valign = 'middle'
+        except Exception:
+            pass
+
+    # Usunięto dynamiczne centrowanie przez update_vertical_padding
         
     def update_text_size(self, *args):
         # Center text horizontally and vertically
