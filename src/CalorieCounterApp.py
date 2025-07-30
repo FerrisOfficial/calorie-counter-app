@@ -42,7 +42,7 @@ class CalorieCounterApp(App):
         self.today = datetime.now().strftime('%Y-%m-%d')
         
     def build(self):
-        """Builds the main application interface with beautiful design"""
+        """Builds the main application interface with fixed elements and scrollable meal cards"""
         # Main layout with gradient background
         main_layout = BoxLayout(orientation='vertical')
         
@@ -56,27 +56,43 @@ class CalorieCounterApp(App):
         header = self._create_header()
         main_layout.add_widget(header)
         
-        # ScrollView for scrollable content
-        scroll = ScrollView(
-            size_hint=(1, 1)  # Takes remaining space
-        )
-        
-        content_layout = BoxLayout(
+        # Fixed content layout with padding
+        fixed_content = BoxLayout(
             orientation='vertical', 
-            padding=dp(20), 
+            padding=[dp(20), 0, dp(20), 0],  # Only horizontal padding
             spacing=dp(15),
             size_hint_y=None
         )
-        content_layout.bind(minimum_height=content_layout.setter('height'))
         
-        # Daily information card
+        # Calculate fixed height for all fixed elements
+        fixed_height = dp(70 + 70 + 40 + 45)  # daily_info + add_meal + meals_header + spacing (3*15)
+        fixed_content.height = fixed_height
+        
+        # Daily information card (fixed)
         self.daily_info_card = self._create_daily_info_card()
+        fixed_content.add_widget(self.daily_info_card)
 
-        # Add meal section with beautiful card
+        # Add meal section (fixed)
         self.add_meal_card = self._create_add_meal_section()
+        fixed_content.add_widget(self.add_meal_card)
 
-        # Meals list section
-        self.meals_header = self._create_meals_header()        # Container for meal cards
+        # Meals list header (fixed)
+        self.meals_header = self._create_meals_header()
+        fixed_content.add_widget(self.meals_header)
+        
+        # Add fixed content to main layout
+        main_layout.add_widget(fixed_content)
+        
+        # ScrollView only for meal cards with padding
+        scroll_container = BoxLayout(
+            orientation='vertical',
+            padding=[dp(20), dp(15), dp(20), 0],  # Add top padding for spacing between header and meal cards
+            size_hint=(1, 1)  # Takes remaining space
+        )
+        
+        scroll = ScrollView()
+        
+        # Container for meal cards only
         self.meals_layout = BoxLayout(
             orientation='vertical',
             size_hint_y=None,
@@ -88,18 +104,21 @@ class CalorieCounterApp(App):
         with self.meals_layout.canvas.before:
             Color(0, 0, 0, 0)  # Completely transparent
         
-        # Weekly statistics button - rounded
+        scroll.add_widget(self.meals_layout)
+        scroll_container.add_widget(scroll)
+        main_layout.add_widget(scroll_container)
+        
+        # Fixed stats button at the bottom
+        stats_container = BoxLayout(
+            orientation='vertical',
+            padding=[dp(20), dp(15), dp(20), dp(20)],
+            size_hint_y=None,
+            height=dp(95)  # Height for smaller stats button + padding (60 + 35 padding)
+        )
+        
         weekly_stats_btn = self._create_stats_button()
-        
-        # Add scrollable elements to content layout (header is already added to main_layout)
-        content_layout.add_widget(self.daily_info_card)
-        content_layout.add_widget(self.add_meal_card)
-        content_layout.add_widget(self.meals_header)
-        content_layout.add_widget(self.meals_layout)
-        content_layout.add_widget(weekly_stats_btn)
-        
-        scroll.add_widget(content_layout)
-        main_layout.add_widget(scroll)
+        stats_container.add_widget(weekly_stats_btn)
+        main_layout.add_widget(stats_container)
         
         # Initialize MealManager with UI components
         meal_name_input, calories_input = self.add_meal_card.get_inputs()

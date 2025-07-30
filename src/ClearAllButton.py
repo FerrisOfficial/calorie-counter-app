@@ -17,7 +17,7 @@ class ClearAllButton(StyledButton):
             'text': 'DEL',
             'size_hint_x': 0.25,
             'bg_color': Colors.RED_HEX,  # Red color for delete action
-            'font_size': dp(12),
+            'font_size': dp(17),
             'bold': True,
             'on_press': clear_callback
         }

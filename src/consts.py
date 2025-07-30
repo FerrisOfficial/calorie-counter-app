@@ -18,6 +18,8 @@ class Colors:
     ORANGE_HEX = '#FF9800'
     GRAY = get_color_from_hex('#666666')
     GRAY_HEX = '#666666'
+    LIGHT_GRAY = get_color_from_hex('#CCCCCC')
+    LIGHT_GRAY_HEX = '#CCCCCC'
     GRAYER = get_color_from_hex('#333333')
     GRAYER_HEX = '#333333'
     WHITE = get_color_from_hex('#FFFFFF')
@@ -39,6 +41,7 @@ class Colors:
             tuple(Colors.RED): Colors.RED_HEX,
             tuple(Colors.ORANGE): Colors.ORANGE_HEX,
             tuple(Colors.GRAY): Colors.GRAY_HEX,
+            tuple(Colors.LIGHT_GRAY): Colors.LIGHT_GRAY_HEX,
             tuple(Colors.GRAYER): Colors.GRAYER_HEX,
             tuple(Colors.WHITE): Colors.WHITE_HEX,
             tuple(Colors.INPUT_TEXT_ACTIVE): Colors.INPUT_TEXT_ACTIVE_HEX

@@ -16,9 +16,9 @@ class MealDeleteButton(Button):
         
         # Set default properties
         default_props = {
-            'text': 'DELETE',
-            'size_hint_x': None,
-            'width': dp(80),
+            'text': 'DEL',
+            'size_hint': (None, None),  # Fixed size for both dimensions
+            'size': (dp(50), dp(50)),   # Smaller square dimensions to fit better in meal card
             'background_normal': '',
             'background_color': [0, 0, 0, 0],  # Transparent - custom background
             'color': get_color_from_hex('#FFFFFF'),

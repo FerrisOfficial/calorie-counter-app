@@ -60,12 +60,20 @@ class MealCard(BoxLayout):
         meal_info_layout.add_widget(meal_name)
         meal_info_layout.add_widget(meal_details)
         
-        # Delete button using the new component
+        # Delete button container for proper alignment
+        from kivy.uix.floatlayout import FloatLayout
+        delete_container = FloatLayout(
+            size_hint_x=None,
+            width=dp(50)
+        )
+        
         delete_btn = MealDeleteButton(delete_callback)
+        delete_btn.pos_hint = {'center_x': 0.5, 'center_y': 0.5}  # Center both ways
+        delete_container.add_widget(delete_btn)
         
         self.add_widget(icon_label)
         self.add_widget(meal_info_layout)
-        self.add_widget(delete_btn)
+        self.add_widget(delete_container)
     
     def update_rect(self, *args):
         self.rect.pos = self.pos

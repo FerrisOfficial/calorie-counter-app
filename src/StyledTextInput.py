@@ -26,7 +26,7 @@ class StyledTextInput(TextInput):
         self.markup = False
         
         # Set colors based on content
-        self.default_foreground_color = Colors.GRAYER
+        self.default_foreground_color = Colors.LIGHT_GRAY  # Light grey for hint text
         self.active_foreground_color = Colors.INPUT_TEXT_ACTIVE
         self.foreground_color = self.default_foreground_color
         

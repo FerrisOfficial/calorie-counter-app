@@ -4,7 +4,8 @@ Daily information card component for the Calorie Counter app
 
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
-from kivy.graphics import Color, RoundedRectangle
+from kivy.uix.widget import Widget
+from kivy.graphics import Color, RoundedRectangle, Line
 from kivy.utils import get_color_from_hex
 from kivy.metrics import dp
 
@@ -21,8 +22,8 @@ class DailyInfoCard(BoxLayout):
         default_props = {
             'orientation': 'vertical',
             'size_hint_y': None,
-            'height': dp(120),
-            'padding': dp(20),
+            'height': dp(70),  # Further reduced for more compact card
+            'padding': [dp(10), dp(10), dp(10), dp(5)],  # left, top, right, bottom - smaller bottom padding
             'spacing': dp(5)
         }
         
@@ -41,56 +42,165 @@ class DailyInfoCard(BoxLayout):
 
         self.bind(size=self.update_card, pos=self.update_card)
 
-        # Create labels
-        self._create_labels()
+        # Create boxes layout
+        self._create_boxes()
         
-    def _create_labels(self):
-        """Creates the calorie information labels"""
-        # Calorie information with colorful accents
-        consumed = self.data_manager.get_daily_calories()
-        remaining = self.data_manager.get_daily_target() - consumed
-        
-        # Target label
-        self.target_label = Label(
-            text='Daily target: {} kcal [color=2196F3][b]TARGET[/b][/color]'.format(
-                self.data_manager.get_daily_target()
-            ),
-            font_size=dp(16),
-            color=Colors.GRAYER,
-            size_hint_y=0.33,
-            markup=True
+    def _create_boxes(self):
+        """Creates three boxes side by side for target, eaten, and remaining with separators"""
+        # Horizontal layout for three boxes
+        boxes_layout = BoxLayout(
+            orientation='horizontal',
+            size_hint=(1, 1),
+            spacing=dp(5)  # Reduced spacing to make room for separators
         )
         
-        # Consumed label
-        consumed_color = Colors.GREEN_HEX if consumed <= self.data_manager.get_daily_target() else Colors.RED_HEX
-        self.consumed_label = Label(
-            text='Consumed: {} kcal [color=4CAF50][b]EATEN[/b][/color]'.format(consumed),
+        # Create three boxes with separators
+        self._create_target_box(boxes_layout)
+        self._create_separator(boxes_layout)
+        self._create_consumed_box(boxes_layout)
+        self._create_separator(boxes_layout)
+        self._create_remaining_box(boxes_layout)
+        
+        self.add_widget(boxes_layout)
+    
+    def _create_target_box(self, parent_layout):
+        """Creates the target calories box"""
+        target_box = BoxLayout(
+            orientation='vertical',
+            size_hint_x=0.33,
+            spacing=dp(5)  # More negative spacing to bring much closer
+        )
+        
+        target_title = Label(
+            text='Target',
+            font_size=dp(14),
+            color=Colors.BLUE,
+            size_hint_y=0.35,  # Smaller proportion
+            bold=True,
+            halign='center',
+            valign='bottom'  # Align text to bottom of its space
+        )
+        target_title.bind(size=target_title.setter('text_size'))
+        
+        self.target_value = Label(
+            text=f'{self.data_manager.get_daily_target()} kcal',
+            font_size=dp(16),
+            color=Colors.BLUE,
+            size_hint_y=0.65,  # Larger proportion
+            bold=True,
+            halign='center',
+            valign='top'  # Align text to top of its space
+        )
+        self.target_value.bind(size=self.target_value.setter('text_size'))
+        
+        target_box.add_widget(target_title)
+        target_box.add_widget(self.target_value)
+        parent_layout.add_widget(target_box)
+    
+    def _create_consumed_box(self, parent_layout):
+        """Creates the consumed calories box"""
+        consumed_box = BoxLayout(
+            orientation='vertical',
+            size_hint_x=0.33,
+            spacing=dp(5)  # More negative spacing to bring much closer
+        )
+        
+        consumed = self.data_manager.get_daily_calories()
+        consumed_color = Colors.GREEN if consumed <= self.data_manager.get_daily_target() else Colors.ORANGE
+        
+        self.consumed_title = Label(
+            text='Eaten',
+            font_size=dp(14),
+            color=consumed_color,
+            size_hint_y=0.35,  # Smaller proportion
+            bold=True,
+            halign='center',
+            valign='bottom'  # Align text to bottom of its space
+        )
+        self.consumed_title.bind(size=self.consumed_title.setter('text_size'))
+        
+        self.consumed_value = Label(
+            text=f'{consumed} kcal',
             font_size=dp(16),
             color=consumed_color,
-            size_hint_y=0.33,
+            size_hint_y=0.65,  # Larger proportion
             bold=True,
-            markup=True
+            halign='center',
+            valign='top'  # Align text to top of its space
+        )
+        self.consumed_value.bind(size=self.consumed_value.setter('text_size'))
+        
+        consumed_box.add_widget(self.consumed_title)
+        consumed_box.add_widget(self.consumed_value)
+        parent_layout.add_widget(consumed_box)
+    
+    def _create_remaining_box(self, parent_layout):
+        """Creates the remaining calories box"""
+        remaining_box = BoxLayout(
+            orientation='vertical',
+            size_hint_x=0.33,
+            spacing=dp(5)  # More negative spacing to bring much closer
         )
         
-        # Remaining label
-        remaining_color = '#2196F3' if remaining >= 0 else '#F44336'
-        self.remaining_label = Label(
-            text='Remaining: {} kcal [color={}]{}[/color]'.format(
-                remaining, 
-                '4CAF50' if remaining >= 0 else 'F44336',
-                'OK' if remaining >= 0 else 'OVER'
-            ),
+        remaining = self.data_manager.get_daily_target() - self.data_manager.get_daily_calories()
+        remaining_color = Colors.GREEN if remaining >= 0 else Colors.RED
+        
+        self.remaining_title = Label(
+            text='Remaining',
+            font_size=dp(14),
+            color=remaining_color,
+            size_hint_y=0.35,  # Smaller proportion
+            bold=True,
+            halign='center',
+            valign='bottom'  # Align text to bottom of its space
+        )
+        self.remaining_title.bind(size=self.remaining_title.setter('text_size'))
+        
+        self.remaining_value = Label(
+            text=f'{remaining} kcal',
             font_size=dp(16),
-            color=get_color_from_hex(remaining_color),
-            size_hint_y=0.33,
+            color=remaining_color,
+            size_hint_y=0.65,  # Larger proportion
             bold=True,
-            markup=True
+            halign='center',
+            valign='top'  # Align text to top of its space
+        )
+        self.remaining_value.bind(size=self.remaining_value.setter('text_size'))
+        
+        remaining_box.add_widget(self.remaining_title)
+        remaining_box.add_widget(self.remaining_value)
+        parent_layout.add_widget(remaining_box)
+    
+    def _create_separator(self, parent_layout):
+        """Creates a thin grey vertical separator line"""
+        separator = Widget(
+            size_hint_x=None,
+            width=dp(2)  # Increased width for thicker line
         )
         
-        # Add labels to layout
-        self.add_widget(self.target_label)
-        self.add_widget(self.consumed_label)
-        self.add_widget(self.remaining_label)
+        with separator.canvas:
+            Color(*Colors.LIGHT_GRAY)  # Use constant instead of hex
+            separator_line = Line(points=[], width=dp(1.5))  # Increased line width
+        
+        # Update separator line when widget changes
+        def update_separator(*args):
+            # Center the line relative to the entire DailyInfoCard
+            card_center_y = self.center_y
+            separator_line.points = [
+                separator.center_x, card_center_y - dp(32.5),  # Start 20dp below card center
+                separator.center_x, card_center_y + dp(32.5)   # End 20dp above card center
+            ]
+        
+        separator.bind(pos=update_separator, size=update_separator)
+        parent_layout.add_widget(separator)
+    
+    def _update_separator(self, separator, *args):
+        """Updates separator line position and size"""
+        # Draw vertical line positioned lower
+        self.separator_line.points = [
+            separator.center_x, separator.y + dp(20),  # Start 20dp from bottom
+            separator.center_x, separator.y + dp(50)   # End 50dp from bottom (30dp line)
+        ]
     
     def update_card(self, *args):
         """Updates card background position and size"""
@@ -102,16 +212,17 @@ class DailyInfoCard(BoxLayout):
         consumed = self.data_manager.get_daily_calories()
         remaining = self.data_manager.get_daily_target() - consumed
         
-        # Color update based on progress
-        consumed_color = '#4CAF50' if consumed <= self.data_manager.get_daily_target() else '#FF5722'
-        remaining_color = '#2196F3' if remaining >= 0 else '#F44336'
+        # Update target value (usually doesn't change, but just in case)
+        self.target_value.text = f'{self.data_manager.get_daily_target()} kcal'
         
-        self.consumed_label.text = 'Consumed: {} kcal [color=4CAF50][b]EATEN[/b][/color]'.format(consumed)
-        self.consumed_label.color = get_color_from_hex(consumed_color)
+        # Update consumed value and color
+        consumed_color = Colors.GREEN if consumed <= self.data_manager.get_daily_target() else Colors.ORANGE
+        self.consumed_value.text = f'{consumed} kcal'
+        self.consumed_value.color = consumed_color
+        self.consumed_title.color = consumed_color  # Update title color too
         
-        self.remaining_label.text = 'Remaining: {} kcal [color={}]{}[/color]'.format(
-            remaining, 
-            '4CAF50' if remaining >= 0 else 'F44336',
-            'OK' if remaining >= 0 else 'OVER'
-        )
-        self.remaining_label.color = get_color_from_hex(remaining_color)
+        # Update remaining value and color
+        remaining_color = Colors.GREEN if remaining >= 0 else Colors.RED
+        self.remaining_value.text = f'{remaining} kcal'
+        self.remaining_value.color = remaining_color
+        self.remaining_title.color = remaining_color  # Update title color too

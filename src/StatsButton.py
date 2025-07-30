@@ -16,7 +16,7 @@ class StatsButton(StyledButton):
         default_props = {
             'text': 'Stats',
             'size_hint_y': None,
-            'height': dp(80),
+            'height': dp(60),  # Match header inner layout height
             'bg_color': Colors.BLUE_HEX,  # Same blue as stats page
             'font_size': dp(18),
             'bold': True,

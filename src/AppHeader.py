@@ -18,7 +18,7 @@ class AppHeader(BoxLayout):
             'orientation': 'vertical',
             'size_hint_y': None,
             'height': dp(80),  # Fixed height for header container
-            'padding': [dp(20), dp(10), dp(20), dp(5)]  # left, top, right, bottom padding
+            'padding': [dp(20), dp(10), dp(20), dp(0)]  # Removed bottom padding to match other sections
         }
         
         # Merge with any custom kwargs
