@@ -23,15 +23,18 @@ class StyledButton(Button):
         if isinstance(bg_color, str):
             # bg_color is a hex string
             r, g, b, _ = get_color_from_hex(bg_color)
+            t = 1
         else:
             # bg_color is already an RGBA tuple/list
             if len(bg_color) >= 3:
-                r, g, b = bg_color[0], bg_color[1], bg_color[2]
+                r, g, b, t = bg_color[0], bg_color[1], bg_color[2], 1
+                if len(bg_color) == 4:
+                    t = bg_color[3]
             else:
                 raise ValueError("Invalid bg_color format. Must be hex string or RGBA tuple/list with at least 3 values.")
         
         # Use original color without darkening
-        self.bg_color = (r, g, b, 1)
+        self.bg_color = (r, g, b, t)
 
         # Set text alignment
         self.halign = 'center'

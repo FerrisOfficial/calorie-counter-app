@@ -4,29 +4,33 @@ Statistics display components for the Calorie Counter app
 
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
-from kivy.uix.popup import Popup
 from kivy.uix.scrollview import ScrollView
 from kivy.graphics import Color, RoundedRectangle
 from kivy.utils import get_color_from_hex
 from kivy.metrics import dp
 
-from src.StyledButton import StyledButton
+from src.BaseDisplayStyle import BaseDisplayStyle
 from src.UIUtils import UIUtils
 from src.consts import Colors
 
 
-class StatsDisplay:
+class StatsDisplay(BaseDisplayStyle):
     """Handles statistics display and formatting"""
     
     def __init__(self, data_manager):
-        self.data_manager = data_manager
+        super().__init__(data_manager)
+        
+    @property
+    def title_text(self):
+        """Title for the statistics display"""
+        return 'Stats'
     
-    def show_weekly_stats(self):
-        """Displays beautiful weekly statistics"""
+    def create_content(self):
+        """Creates the main content for statistics display"""
         stats = self.data_manager.get_weekly_stats()
         
-        # Create beautiful popup with statistics
-        content = BoxLayout(orientation='vertical', spacing=dp(15), padding=dp(20))
+        # Create content container
+        content_container = BoxLayout(orientation='vertical', spacing=dp(10))
         
         # Header with statistics
         stats_header = self._create_stats_header(stats)
@@ -56,48 +60,23 @@ class StatsDisplay:
         
         details_scroll.add_widget(details_layout)
         
-        # Close button
-        close_btn = StyledButton(
-            text='OK Close',
-            size_hint_y=None,
-            height=dp(50),
-            bg_color=Colors.BLUE,
-            font_size=dp(16),
-            bold=True,
-            color=Colors.BLACK
-        )
+        content_container.add_widget(stats_header)
+        content_container.add_widget(extra_info)
+        content_container.add_widget(details_scroll)
         
-        content.add_widget(stats_header)
-        content.add_widget(extra_info)
-        content.add_widget(details_scroll)
-        content.add_widget(close_btn)
-        
-        popup = Popup(
-            title='',
-            content=content,
-            size_hint=(0.95, 0.9),
-            separator_height=0
-        )
-        
-        close_btn.bind(on_press=popup.dismiss)
-        popup.open()
+        return content_container
+    
+    def show_weekly_stats(self):
+        """Displays beautiful weekly statistics using base display style"""
+        self.show_display()
     
     def _create_stats_header(self, stats):
         """Creates the header section with main statistics"""
         stats_header = BoxLayout(
             orientation='vertical',
             size_hint_y=None,
-            height=dp(120),
+            height=dp(90),
             spacing=dp(5)
-        )
-        
-        week_title = Label(
-            text='[color=2196F3][b]Stats[/b][/color]',
-            font_size=dp(24),
-            color=get_color_from_hex('#2196F3'),
-            size_hint_y=None,
-            height=dp(30),
-            markup=True
         )
         
         # Main statistics with colors
@@ -134,7 +113,6 @@ class StatsDisplay:
         main_stats.add_widget(target_box)
         main_stats.add_widget(percent_box)
         
-        stats_header.add_widget(week_title)
         stats_header.add_widget(main_stats)
         
         return stats_header
@@ -177,13 +155,8 @@ class StatsDisplay:
         bg_color = UIUtils.get_background_color_based_on_progress(goal_percentage)
         progress_color = UIUtils.get_color_based_on_progress(goal_percentage)
         
-        with card.canvas.before:
-            Color(*get_color_from_hex(bg_color))
-            card_rect = RoundedRectangle(pos=card.pos, size=card.size, radius=[dp(12)])
-        card.bind(
-            size=lambda x, *args: setattr(card_rect, 'size', x.size),
-            pos=lambda x, *args: setattr(card_rect, 'pos', x.pos)
-        )
+        # Use base class method to create card background
+        self.create_card_background(card, bg_color)
         
         # Date
         day_name = day_data['date'].strftime('%a')  # Day abbreviation

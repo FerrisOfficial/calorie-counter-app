@@ -14,7 +14,7 @@ class ClearAllButton(StyledButton):
     def __init__(self, clear_callback, **kwargs):
         # Set default properties for clear all button
         default_props = {
-            'text': 'Clear all',
+            'text': 'DEL',
             'size_hint_x': 0.25,
             'bg_color': Colors.RED_HEX,  # Red color for delete action
             'font_size': dp(12),

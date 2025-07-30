@@ -21,6 +21,7 @@ from src.StyledButton import StyledButton
 from src.StyledTextInput import StyledTextInput
 from src.UIUtils import UIUtils
 from src.StatsDisplay import StatsDisplay
+from src.SettingsDisplay import SettingsDisplay
 from src.MealManager import MealManager
 from src.StatsButton import StatsButton
 from src.AppHeader import AppHeader
@@ -37,6 +38,7 @@ class CalorieCounterApp(App):
         super().__init__(**kwargs)
         self.data_manager = CalorieDataManager()
         self.stats_display = StatsDisplay(self.data_manager)
+        self.settings_display = SettingsDisplay(self.data_manager)
         self.today = datetime.now().strftime('%Y-%m-%d')
         
     def build(self):
@@ -50,16 +52,9 @@ class CalorieCounterApp(App):
             self.bg_rect = RoundedRectangle(pos=main_layout.pos, size=main_layout.size)
         main_layout.bind(size=self.update_bg, pos=self.update_bg)
         
-        # Fixed header at the top with padding
-        header_container = BoxLayout(
-            orientation='vertical',
-            size_hint_y=None,
-            height=dp(100),  # Fixed height for header container
-            padding=[dp(20), dp(10), dp(20), dp(5)]  # left, top, right, bottom padding
-        )
-        header_layout = self._create_header()
-        header_container.add_widget(header_layout)
-        main_layout.add_widget(header_container)
+        # Fixed header at the top
+        header = self._create_header()
+        main_layout.add_widget(header)
         
         # ScrollView for scrollable content
         scroll = ScrollView(
@@ -126,7 +121,7 @@ class CalorieCounterApp(App):
     
     def _create_header(self):
         """Creates the header section"""
-        return AppHeader()
+        return AppHeader(settings_callback=self._show_settings)
     
     def _create_daily_info_card(self):
         """Creates the daily information card"""
@@ -179,3 +174,7 @@ class CalorieCounterApp(App):
     def update_daily_info(self):
         """Updates daily requirement information with colors"""
         self.daily_info_card.update_info()
+    
+    def _show_settings(self, instance):
+        """Shows the settings display"""
+        self.settings_display.show_settings()
