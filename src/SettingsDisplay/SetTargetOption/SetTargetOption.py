@@ -109,7 +109,7 @@ class SetTargetOption(BaseSettingsOption, BaseDisplayStyle):
         )
 
         cancel_btn = StyledButton(text="Cancel", bg_color=Colors.GRAY)
-        cancel_btn.bind(on_press=self.dismiss_display)
+        cancel_btn.bind(on_press=lambda *_: self.dismiss_display())
         button_layout.add_widget(cancel_btn)
 
         save_btn = StyledButton(text="Save", bg_color=Colors.ORANGE)
