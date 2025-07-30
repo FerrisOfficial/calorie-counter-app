@@ -474,7 +474,7 @@ class SetTargetOption(BaseSettingsOption):
             new_target = int(self.manual_input.text)
             if new_target > 0:
                 self.current_target = new_target
-                self.target_label.text = f"{self.current_target} kcal"
+                self.target_label.text = f"{self.current_target}"
                 
                 # Powiadom o zmianie wartości
                 if self.on_value_change:
