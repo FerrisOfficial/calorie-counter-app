@@ -4,10 +4,12 @@ Settings display components for the Calorie Counter app
 
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
+from kivy.uix.scrollview import ScrollView
 from kivy.metrics import dp
 
 from src.BaseDisplayStyle import BaseDisplayStyle
 from src.consts import Colors
+from src.SetTargetOption import SetTargetOption
 
 
 class SettingsDisplay(BaseDisplayStyle):
@@ -33,31 +35,80 @@ class SettingsDisplay(BaseDisplayStyle):
     
     def create_content(self):
         """Creates the main content for settings display"""
-        content_container = BoxLayout(orientation='vertical', spacing=dp(20))
+        # Główny kontener z scrollview dla ustawień
+        scroll = ScrollView()
         
-        # Placeholder content
-        placeholder_label = Label(
-            text='Settings will be implemented here',
-            font_size=dp(16),
-            color=Colors.GRAY,
-            text_size=(None, None),
-            halign='center'
+        content_container = BoxLayout(
+            orientation='vertical',
+            spacing=dp(15),
+            size_hint_y=None,
+            padding=[dp(20), dp(10)]
         )
+        content_container.bind(minimum_height=content_container.setter('height'))
         
-        # Additional info
-        info_label = Label(
-            text='[color=666666]This is a placeholder for future settings:\n• Daily calorie goals\n• Theme preferences\n• Data export options\n• Notification settings[/color]',
+        # Nagłówek sekcji
+        settings_header = Label(
+            text='Application Settings',
+            font_size=dp(18),
+            color=Colors.ORANGE,
+            size_hint_y=None,
+            height=dp(40),
+            text_size=(None, None),
+            halign='left',
+            bold=True
+        )
+        content_container.add_widget(settings_header)
+        
+        # Opcja ustawienia celu kalorycznego
+        self.target_option = SetTargetOption(on_value_change=self.on_target_changed)
+        content_container.add_widget(self.target_option)
+        
+        # Separator dla przyszłych opcji
+        separator = Label(
+            text='',
+            size_hint_y=None,
+            height=dp(20)
+        )
+        content_container.add_widget(separator)
+        
+        # Placeholder dla przyszłych ustawień
+        future_settings_label = Label(
+            text='[color=666666]More settings coming soon:\n• Theme preferences\n• Data export options\n• Notification settings[/color]',
             font_size=dp(14),
             markup=True,
+            size_hint_y=None,
+            height=dp(100),
             text_size=(None, None),
-            halign='left'
+            halign='left',
+            valign='top'
         )
+        content_container.add_widget(future_settings_label)
         
-        content_container.add_widget(placeholder_label)
-        content_container.add_widget(info_label)
-        
-        return content_container
+        scroll.add_widget(content_container)
+        return scroll
     
     def show_settings(self):
         """Shows the settings display"""
+        # Załaduj aktualne ustawienia przed pokazaniem
+        self.load_current_settings()
         self.show_display()
+    
+    def load_current_settings(self):
+        """Ładuje aktualne ustawienia z data managera"""
+        if self.data_manager and hasattr(self, 'target_option'):
+            # Pobierz aktualny cel kaloryczny z data managera
+            current_target = self.data_manager.get_daily_target()
+            if current_target:
+                self.target_option.set_option_value(current_target)
+    
+    def on_target_changed(self, new_target):
+        """Callback wywoływany gdy zmieni się cel kaloryczny"""
+        if self.data_manager:
+            self.data_manager.set_daily_target(new_target)
+    
+    def save_settings(self):
+        """Zapisuje ustawienia do data managera"""
+        if self.data_manager and hasattr(self, 'target_option'):
+            # Zapisz cel kaloryczny
+            target_value = self.target_option.get_option_value()
+            self.data_manager.set_daily_target(target_value)

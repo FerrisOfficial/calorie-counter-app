@@ -25,6 +25,14 @@ class Colors:
     WHITE = get_color_from_hex('#FFFFFF')
     WHITE_HEX = '#FFFFFF'
     
+    # Background colors for progress indicators
+    LIGHT_GREEN = get_color_from_hex('#E8F5E8')
+    LIGHT_GREEN_HEX = '#E8F5E8'
+    LIGHT_ORANGE = get_color_from_hex('#FFF3E0')
+    LIGHT_ORANGE_HEX = '#FFF3E0'
+    LIGHT_RED = get_color_from_hex('#FFEBEE')
+    LIGHT_RED_HEX = '#FFEBEE'
+    
     # Text colors for input fields
     # Note: Due to Kivy TextInput limitations, foreground_color may not be visually effective
     # but the functionality is implemented and ready for future Kivy versions
@@ -44,6 +52,9 @@ class Colors:
             tuple(Colors.LIGHT_GRAY): Colors.LIGHT_GRAY_HEX,
             tuple(Colors.GRAYER): Colors.GRAYER_HEX,
             tuple(Colors.WHITE): Colors.WHITE_HEX,
-            tuple(Colors.INPUT_TEXT_ACTIVE): Colors.INPUT_TEXT_ACTIVE_HEX
+            tuple(Colors.INPUT_TEXT_ACTIVE): Colors.INPUT_TEXT_ACTIVE_HEX,
+            tuple(Colors.LIGHT_GREEN): Colors.LIGHT_GREEN_HEX,
+            tuple(Colors.LIGHT_ORANGE): Colors.LIGHT_ORANGE_HEX,
+            tuple(Colors.LIGHT_RED): Colors.LIGHT_RED_HEX
         }
         return dict_color.get(tuple(color), "#000000")

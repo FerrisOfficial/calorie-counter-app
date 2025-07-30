@@ -12,7 +12,7 @@ class CalorieDataManager:
     
     def __init__(self, filename='calorie_data.json'):
         self.store = JsonStore(filename)
-        self.daily_target = 2000  # Default daily target
+        self.daily_target = self.load_daily_target()  # Load saved target or use default
         
     def get_today_string(self):
         """Returns today's date as string"""
@@ -127,7 +127,16 @@ class CalorieDataManager:
         """Sets daily calorie target"""
         if target > 0:
             self.daily_target = target
+            # Save to persistent storage
+            self.store.put('settings', daily_target=target)
     
     def get_daily_target(self):
         """Returns daily calorie target"""
         return self.daily_target
+    
+    def load_daily_target(self):
+        """Loads daily target from storage or returns default"""
+        if self.store.exists('settings'):
+            settings = self.store.get('settings')
+            return settings.get('daily_target', 2000)
+        return 2000  # Default target

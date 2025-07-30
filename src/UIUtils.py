@@ -9,6 +9,7 @@ from kivy.utils import get_color_from_hex
 from kivy.metrics import dp
 from src.StyledButton import StyledButton
 from src.consts import Colors
+from src.consts import Colors
 
 
 class UIUtils:
@@ -129,8 +130,8 @@ class UIUtils:
     def get_background_color_based_on_progress(percentage):
         """Returns background color based on progress percentage"""
         if percentage >= 90:
-            return '#E8F5E8'  # Light green
+            return Colors.LIGHT_GREEN_HEX  # Light green
         elif percentage >= 70:
-            return '#FFF3E0'  # Light orange
+            return Colors.LIGHT_ORANGE_HEX  # Light orange
         else:
-            return '#FFEBEE'  # Light red
+            return Colors.LIGHT_RED_HEX  # Light red

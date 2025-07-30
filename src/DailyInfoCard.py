@@ -10,6 +10,7 @@ from kivy.utils import get_color_from_hex
 from kivy.metrics import dp
 
 from src.consts import Colors
+from src.UIUtils import UIUtils
 
 
 class DailyInfoCard(BoxLayout):
@@ -106,7 +107,11 @@ class DailyInfoCard(BoxLayout):
         )
         
         consumed = self.data_manager.get_daily_calories()
-        consumed_color = Colors.GREEN if consumed <= self.data_manager.get_daily_target() else Colors.ORANGE
+        target = self.data_manager.get_daily_target()
+        
+        # Calculate progress percentage for consumed calories
+        consumed_percentage = (consumed / target * 100) if target > 0 else 0
+        consumed_color = UIUtils.get_color_based_on_progress(consumed_percentage)
         
         self.consumed_title = Label(
             text='Eaten',
@@ -143,7 +148,13 @@ class DailyInfoCard(BoxLayout):
         )
         
         remaining = self.data_manager.get_daily_target() - self.data_manager.get_daily_calories()
-        remaining_color = Colors.GREEN if remaining >= 0 else Colors.RED
+        target = self.data_manager.get_daily_target()
+        consumed = self.data_manager.get_daily_calories()
+        
+        # Calculate progress percentage for remaining calories (inverted logic)
+        # When we have more remaining, it's "better" (green), when less remaining it's "worse" (red)
+        remaining_percentage = (consumed / target * 100) if target > 0 else 0
+        remaining_color = UIUtils.get_color_based_on_progress(remaining_percentage)
         
         self.remaining_title = Label(
             text='Remaining',
@@ -211,18 +222,21 @@ class DailyInfoCard(BoxLayout):
         """Updates daily requirement information with colors"""
         consumed = self.data_manager.get_daily_calories()
         remaining = self.data_manager.get_daily_target() - consumed
+        target = self.data_manager.get_daily_target()
         
         # Update target value (usually doesn't change, but just in case)
-        self.target_value.text = f'{self.data_manager.get_daily_target()} kcal'
+        self.target_value.text = f'{target} kcal'
         
-        # Update consumed value and color
-        consumed_color = Colors.GREEN if consumed <= self.data_manager.get_daily_target() else Colors.ORANGE
+        # Calculate progress percentage and get color for consumed calories
+        consumed_percentage = (consumed / target * 100) if target > 0 else 0
+        consumed_color = UIUtils.get_color_based_on_progress(consumed_percentage)
         self.consumed_value.text = f'{consumed} kcal'
         self.consumed_value.color = consumed_color
         self.consumed_title.color = consumed_color  # Update title color too
         
-        # Update remaining value and color
-        remaining_color = Colors.GREEN if remaining >= 0 else Colors.RED
+        # Calculate progress percentage and get color for remaining calories
+        remaining_percentage = (consumed / target * 100) if target > 0 else 0
+        remaining_color = UIUtils.get_color_based_on_progress(remaining_percentage)
         self.remaining_value.text = f'{remaining} kcal'
         self.remaining_value.color = remaining_color
         self.remaining_title.color = remaining_color  # Update title color too
