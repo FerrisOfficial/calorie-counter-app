@@ -7,9 +7,9 @@ from kivy.uix.label import Label
 from kivy.uix.scrollview import ScrollView
 from kivy.metrics import dp
 
-from src.BaseDisplayStyle import BaseDisplayStyle
+from src.Styled.BaseDisplayStyle import BaseDisplayStyle
 from src.consts import Colors
-from src.SetTargetOption import SetTargetOption
+from src.SettingsDisplay.SetTargetOption.SetTargetOption import SetTargetOption
 
 
 class SettingsDisplay(BaseDisplayStyle):

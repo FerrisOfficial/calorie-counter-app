@@ -11,7 +11,7 @@ from kivy.graphics import Color, RoundedRectangle
 from kivy.utils import get_color_from_hex
 from kivy.metrics import dp
 
-from src.StyledButton import StyledButton
+from src.Styled.StyledButton import StyledButton
 from src.consts import Colors
 
 

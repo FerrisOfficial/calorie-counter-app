@@ -7,7 +7,7 @@ from kivy.uix.image import Image
 from kivy.metrics import dp
 import os
 
-from src.StyledButton import StyledButton
+from src.Styled.StyledButton import StyledButton
 from src.consts import Colors
 
 

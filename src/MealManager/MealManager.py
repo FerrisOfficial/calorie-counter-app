@@ -8,7 +8,7 @@ from kivy.graphics import Color, RoundedRectangle
 from kivy.utils import get_color_from_hex
 from kivy.metrics import dp
 
-from src.MealCard import MealCard
+from src.MealManager.MealCard.MealCard import MealCard
 from src.UIUtils import UIUtils
 
 

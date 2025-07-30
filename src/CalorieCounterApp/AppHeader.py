@@ -5,8 +5,8 @@ Application header component for the Calorie Counter app
 from kivy.uix.boxlayout import BoxLayout
 from kivy.metrics import dp
 
-from src.StyledLabel import StyledLabel
-from src.SettingsButton import SettingsButton
+from src.Styled.StyledLabel import StyledLabel
+from src.SettingsDisplay.SettingsButton import SettingsButton
 from src.consts import Colors
 
 class AppHeader(BoxLayout):

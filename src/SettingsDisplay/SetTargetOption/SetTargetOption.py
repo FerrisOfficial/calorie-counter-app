@@ -5,10 +5,10 @@ from kivy.uix.textinput import TextInput
 from kivy.uix.spinner import Spinner
 from kivy.uix.popup import Popup
 from kivy.uix.scrollview import ScrollView
-from src.BaseSettingsOption import BaseSettingsOption
-from src.StyledButton import StyledButton
-from src.StyledTextInput import StyledTextInput
-from src.StyledLabel import StyledLabel
+from src.Styled.BaseSettingsOption import BaseSettingsOption
+from src.Styled.StyledButton import StyledButton
+from src.Styled.StyledTextInput import StyledTextInput
+from src.Styled.StyledLabel import StyledLabel
 from src.consts import Colors
 
 

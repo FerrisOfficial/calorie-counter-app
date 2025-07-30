@@ -2,7 +2,7 @@
 Clear all button component for the Calorie Counter app
 """
 
-from src.StyledButton import StyledButton
+from src.Styled.StyledButton import StyledButton
 from kivy.metrics import dp
 
 from src.consts import Colors

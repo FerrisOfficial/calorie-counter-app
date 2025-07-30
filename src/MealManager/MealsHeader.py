@@ -7,8 +7,8 @@ from kivy.uix.label import Label
 from kivy.uix.button import Button
 from kivy.utils import get_color_from_hex
 from kivy.metrics import dp
-from src.ClearAllButton import ClearAllButton
-from src.StyledButton import StyledButton
+from src.CalorieCounterApp.ClearAllButton import ClearAllButton
+from src.Styled.StyledButton import StyledButton
 from src.consts import Colors
 
 

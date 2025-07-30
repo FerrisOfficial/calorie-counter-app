@@ -15,19 +15,19 @@ from kivy.utils import get_color_from_hex
 from kivy.metrics import dp
 from datetime import datetime
 
-from src.CalorieDataManager import CalorieDataManager
-from src.StyledLabel import StyledLabel
-from src.StyledButton import StyledButton
-from src.StyledTextInput import StyledTextInput
+from src.CalorieCounterApp.CalorieDataManager import CalorieDataManager
+from src.Styled.StyledLabel import StyledLabel
+from src.Styled.StyledButton import StyledButton
+from src.Styled.StyledTextInput import StyledTextInput
 from src.UIUtils import UIUtils
-from src.StatsDisplay import StatsDisplay
-from src.SettingsDisplay import SettingsDisplay
-from src.MealManager import MealManager
-from src.StatsButton import StatsButton
-from src.AppHeader import AppHeader
-from src.DailyInfoCard import DailyInfoCard
-from src.AddMealSection import AddMealSection
-from src.MealsHeader import MealsHeader
+from src.Stats.StatsDisplay import StatsDisplay
+from src.SettingsDisplay.SettingsDisplay import SettingsDisplay
+from src.MealManager.MealManager import MealManager
+from src.Stats.StatsButton import StatsButton
+from src.CalorieCounterApp.AppHeader import AppHeader
+from src.CalorieCounterApp.DailyInfoCard import DailyInfoCard
+from src.MealManager.AddMealSection import AddMealSection
+from src.MealManager.MealsHeader import MealsHeader
 from src.consts import Colors
 
 

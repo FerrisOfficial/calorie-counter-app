@@ -7,7 +7,7 @@ from kivy.uix.label import Label
 from kivy.graphics import Color, RoundedRectangle
 from kivy.utils import get_color_from_hex
 from kivy.metrics import dp
-from src.MealDeleteButton import MealDeleteButton
+from src.MealManager.MealDeleteButton import MealDeleteButton
 from src.consts import Colors
 
 

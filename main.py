@@ -13,7 +13,7 @@ Config.set('graphics', 'width', '360')
 Config.set('graphics', 'height', '640')
 Config.set('graphics', 'resizable', False)
 
-from src.CalorieCounterApp import CalorieCounterApp
+from src.CalorieCounterApp.CalorieCounterApp import CalorieCounterApp
 
 if __name__ == '__main__':
     CalorieCounterApp().run()
