@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
 from kivy.factory import Factory
+from src.consts import Colors
 
 
 class BaseSettingsOptionMeta(type(BoxLayout), type(ABC)):
@@ -61,7 +62,8 @@ class BaseSettingsOption(BoxLayout, ABC, metaclass=BaseSettingsOptionMeta):
             size_hint_x=0.6,
             text_size=(None, None),
             halign='left',
-            valign='middle'
+            valign='middle',
+            color=Colors.LIGHT_GRAY,  # Example background color
         )
         return label
     
