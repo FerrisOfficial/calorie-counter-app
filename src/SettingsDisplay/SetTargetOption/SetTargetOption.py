@@ -84,7 +84,7 @@ class SetTargetOption(BaseSettingsOption):
         content = BoxLayout(
             orientation='vertical',
             spacing=dp(10),
-            padding=[dp(20), dp(20), dp(20), dp(20)]
+            padding=[dp(20), dp(10), dp(20), dp(10)]  # Match SettingsDisplay style
         )
         
         # Stylowany tytuł
@@ -110,7 +110,7 @@ class SetTargetOption(BaseSettingsOption):
         self.popup = Popup(
             title='',  # Pusty tytuł, używamy naszego stylowanego
             content=content,
-            size_hint=(0.9, 0.8),
+            size_hint=(0.95, 0.95),  # Match SettingsDisplay size
             separator_height=0  # Usuwa niebieską linię separatora
         )
         self.popup.open()
@@ -134,8 +134,8 @@ class SetTargetOption(BaseSettingsOption):
 
         main_layout = BoxLayout(
             orientation='vertical',
-            spacing=15,
-            padding=[0, 10, 0, 10],  # Zmniejszony padding, bo już mamy w głównym kontenerze
+            spacing=8,  # Reduced spacing between sections
+            padding=[0, 2, 0, 10],  # Reduced top padding to move manual section closer to title
             size_hint_y=None
         )
         main_layout.bind(minimum_height=main_layout.setter('height'))
@@ -204,8 +204,9 @@ class SetTargetOption(BaseSettingsOption):
         section = BoxLayout(
             orientation='vertical',
             size_hint_y=None,
-            height=dp(100),
-            spacing=dp(10)
+            height=dp(90),
+            spacing=dp(10),
+            # padding=[dp(10), dp(2), dp(10), dp(10)]
         )
 
         title = StyledLabel(
