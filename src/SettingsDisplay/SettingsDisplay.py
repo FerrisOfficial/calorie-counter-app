@@ -46,19 +46,6 @@ class SettingsDisplay(BaseDisplayStyle):
         )
         content_container.bind(minimum_height=content_container.setter('height'))
         
-        # Nagłówek sekcji
-        settings_header = Label(
-            text='Application Settings',
-            font_size=dp(18),
-            color=Colors.ORANGE,
-            size_hint_y=None,
-            height=dp(40),
-            text_size=(None, None),
-            halign='left',
-            bold=True
-        )
-        content_container.add_widget(settings_header)
-        
         # Opcja ustawienia celu kalorycznego
         self.target_option = SetTargetOption(on_value_change=self.on_target_changed)
         content_container.add_widget(self.target_option)

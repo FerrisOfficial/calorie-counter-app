@@ -1,54 +1,39 @@
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
 from kivy.uix.spinner import Spinner
+from kivy.uix.popup import Popup
 from kivy.metrics import dp
 
-from src.Styled.BaseSettingsOption import BaseSettingsOption
+from src.SettingsDisplay.BaseSettingsOption import BaseSettingsOption
 from src.Styled.StyledButton import StyledButton
 from src.Styled.StyledTextInput import StyledTextInput
 from src.Styled.StyledLabel import StyledLabel
-from src.Styled.BaseDisplayStyle import BaseDisplayStyle
 from src.consts import Colors
 
 
-class SetTargetOption(BaseSettingsOption, BaseDisplayStyle):
+class SetTargetOption(BaseSettingsOption):
     """
-    Opcja ustawienia celu kalorycznego (z ręcznym lub automatycznym obliczeniem).
-    Korzysta ze wspólnego stylu popupów (BaseDisplayStyle).
+    Opcja ustawienia celu kalorycznego.
+    Dziedziczy z BaseSettingsOption strukturę: tytuł, pole, przycisk.
+    Używa Popup dla funkcjonalności wyświetlania.
     """
 
     def __init__(self, on_value_change=None, **kwargs):
         self.current_target = 2000
         self.on_value_change = on_value_change
-        BaseSettingsOption.__init__(self, option_name="Target", **kwargs)
-        BaseDisplayStyle.__init__(self)
+        self.popup = None
+        super().__init__(option_title="Kcal Target", **kwargs)
 
-    def create_option_content(self):
-        self.option_label = self.create_option_label("Kcal Target")
-        self.add_widget(self.option_label)
-
-        value_container = BoxLayout(
-            orientation='horizontal',
-            size_hint_y=None,
-            height=dp(40),
-            spacing=dp(10)
-        )
-
-        # Szary kontener wokół target_label
-        from kivy.graphics import Color, RoundedRectangle
+    # === Implementacja BaseSettingsOption ===
+    
+    def create_value_display(self):
+        """Tworzy kontener wyświetlający aktualny target"""
         label_container = BoxLayout(
             size_hint_x=0.6, 
             size_hint_y=None,
             height=dp(40),
             padding=[dp(8), dp(4)], 
             orientation='vertical'
-        )
-        with label_container.canvas.before:
-            Color(*Colors.LIGHT_GRAY)
-            label_bg = RoundedRectangle(pos=label_container.pos, size=label_container.size, radius=[dp(8)])
-        label_container.bind(
-            pos=lambda inst, *a: setattr(label_bg, 'pos', inst.pos),
-            size=lambda inst, *a: setattr(label_bg, 'size', inst.size)
         )
         
         self.target_label = StyledLabel(
@@ -59,50 +44,113 @@ class SetTargetOption(BaseSettingsOption, BaseDisplayStyle):
             valign='middle'
         )
         label_container.add_widget(self.target_label)
-        value_container.add_widget(label_container)
+        return label_container
 
-        self.set_button = StyledButton(
+    def create_action_button(self):
+        """Tworzy przycisk 'Set' otwierający popup"""
+        set_button = StyledButton(
             text="Set",
             size_hint_x=0.4,
             size_hint_y=None,
             height=dp(40),
             bg_color=Colors.ORANGE
         )
-        self.set_button.bind(on_press=lambda *_: self.show_display())
-        value_container.add_widget(self.set_button)
+        set_button.bind(on_press=lambda *_: self.show_popup())
+        return set_button
 
-        self.add_widget(value_container)
+    def get_option_value(self):
+        """Zwraca aktualny target"""
+        return self.current_target
 
-    # === Właściwości z BaseDisplayStyle ===
+    def set_option_value(self, value):
+        """Ustawia nowy target"""
+        if isinstance(value, (int, float)) and value > 0:
+            self.current_target = int(value)
+            self.update_value_display()
 
-    @property
-    def title_text(self):
-        return "Set Daily Calorie Target"
+    def update_value_display(self):
+        """Aktualizuje wyświetlaną wartość targetu"""
+        if hasattr(self, 'target_label'):
+            self.target_label.text = f"{self.current_target}"
 
-    @property
-    def title_color(self):
-        return Colors.ORANGE
+    # === Popup functionality ===
 
-    def create_content(self):
-        return self.create_popup_content()
+    def show_popup(self):
+        """Pokazuje popup z ustawieniami targetu"""
+        if self.popup:
+            self.popup.dismiss()
+        
+        # Główny kontener z odpowiednim stylingiem
+        content = BoxLayout(
+            orientation='vertical',
+            spacing=dp(10),
+            padding=[dp(20), dp(20), dp(20), dp(20)]
+        )
+        
+        # Stylowany tytuł
+        from kivy.uix.label import Label
+        title_widget = Label(
+            text=f'[color={Colors.ORANGE_HEX.replace("#", "")}][b]Set Daily Calorie Target[/b][/color]',
+            font_size=dp(24),
+            color=Colors.ORANGE,
+            size_hint_y=None,
+            height=dp(40),
+            markup=True,
+            halign='center',
+            valign='middle'
+        )
+        title_widget.bind(size=title_widget.setter('text_size'))
+        content.add_widget(title_widget)
+        
+        # Główna zawartość popup'a
+        popup_content = self.create_popup_content()
+        content.add_widget(popup_content)
+        
+        # Tworzenie popup'a bez domyślnego tytułu
+        self.popup = Popup(
+            title='',  # Pusty tytuł, używamy naszego stylowanego
+            content=content,
+            size_hint=(0.9, 0.8),
+            separator_height=0  # Usuwa niebieską linię separatora
+        )
+        self.popup.open()
+
+    def dismiss_popup(self):
+        """Zamyka popup"""
+        if self.popup:
+            self.popup.dismiss()
+            self.popup = None
 
     # === Zawartość popupu ===
 
     def create_popup_content(self):
         from kivy.uix.scrollview import ScrollView
 
+        # Główny kontener z przyciskami na dole
+        root_layout = BoxLayout(orientation='vertical')
+        
+        # Scrollowalna zawartość
         scroll = ScrollView()
 
         main_layout = BoxLayout(
             orientation='vertical',
             spacing=15,
-            padding=20,
+            padding=[0, 10, 0, 10],  # Zmniejszony padding, bo już mamy w głównym kontenerze
             size_hint_y=None
         )
         main_layout.bind(minimum_height=main_layout.setter('height'))
 
         manual_section = self.create_manual_section()
         main_layout.add_widget(manual_section)
+
+        # Dodatkowy odstęp przed "OR"
+        top_spacer = StyledLabel(
+            text="",
+            size_hint_y=None,
+            height=dp(0),
+            bg_color=Colors.TRANSPARENT_HEX
+        )
+        main_layout.add_widget(top_spacer)
 
         separator = StyledLabel(
             text="OR",
@@ -114,24 +162,32 @@ class SetTargetOption(BaseSettingsOption, BaseDisplayStyle):
         )
         main_layout.add_widget(separator)
 
+        # Dodatkowy odstęp po "OR"
+        bottom_spacer = StyledLabel(
+            text="",
+            size_hint_y=None,
+            height=dp(0),
+            bg_color=Colors.TRANSPARENT_HEX
+        )
+        main_layout.add_widget(bottom_spacer)
+
         auto_section = self.create_auto_section()
         main_layout.add_widget(auto_section)
 
         scroll.add_widget(main_layout)
-
-        root_layout = BoxLayout(orientation='vertical')
         root_layout.add_widget(scroll)
 
+        # Przyciski na dole
         button_layout = BoxLayout(
             orientation='horizontal',
             size_hint_y=None,
             height=dp(50),
             spacing=dp(10),
-            padding=[dp(20), dp(10), dp(20), dp(10)]
+            padding=[0, dp(10), 0, 0]
         )
 
         cancel_btn = StyledButton(text="Cancel", bg_color=Colors.GRAY)
-        cancel_btn.bind(on_press=lambda *_: self.dismiss_display())
+        cancel_btn.bind(on_press=lambda *_: self.dismiss_popup())
         button_layout.add_widget(cancel_btn)
 
         save_btn = StyledButton(text="Save", bg_color=Colors.ORANGE)
@@ -417,21 +473,9 @@ class SetTargetOption(BaseSettingsOption, BaseDisplayStyle):
         try:
             new_target = int(self.manual_input.text)
             if new_target > 0:
-                self.current_target = new_target
-                self.target_label.text = f"{self.current_target}"
+                self.set_option_value(new_target)
                 if self.on_value_change:
                     self.on_value_change(new_target)
-                self.dismiss_display()
+                self.dismiss_popup()
         except ValueError:
             pass
-
-    def get_option_value(self):
-        return self.current_target
-
-    def set_option_value(self, value):
-        if isinstance(value, (int, float)) and value > 0:
-            self.current_target = int(value)
-            self.target_label.text = f"{self.current_target} kcal"
-
-    def apply_styling(self):
-        pass

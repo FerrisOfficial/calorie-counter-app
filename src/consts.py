@@ -39,6 +39,9 @@ class Colors:
     INPUT_TEXT_ACTIVE = get_color_from_hex('#000000')  # Black for active text
     INPUT_TEXT_ACTIVE_HEX = '#000000'
 
+    TRANSPARENT = get_color_from_hex('#00000000')  # Fully transparent
+    TRANSPARENT_HEX = '#00000000'
+
     @staticmethod
     def to_hex(color):
         """Converts a Kivy color to hex string"""
