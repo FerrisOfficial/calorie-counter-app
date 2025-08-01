@@ -33,8 +33,8 @@ class StyledTextInput(TextInput):
         self.bind(size=self.update_graphics, pos=self.update_graphics)
         self.bind(focus=self.on_focus_change)
         self.bind(text=self.on_text_change)
-        # Ustaw padding_y: dolny większy niż górny dla lepszego centrowania
-        self.padding_y = [13, 5]
+        # Ustaw padding: dolny większy niż górny dla lepszego centrowania  
+        self.padding = [dp(10), dp(13), dp(10), dp(5)]
         # Spróbuj ustawić valign jeśli obsługiwane przez TextInput
         try:
             self.valign = 'middle'

@@ -29,20 +29,42 @@ class SetTargetOption(BaseSettingsOption, BaseDisplayStyle):
 
         value_container = BoxLayout(
             orientation='horizontal',
-            size_hint_x=0.4,
-            spacing=10
+            size_hint_y=None,
+            height=dp(40),
+            spacing=dp(10)
         )
 
+        # Szary kontener wokół target_label
+        from kivy.graphics import Color, RoundedRectangle
+        label_container = BoxLayout(
+            size_hint_x=0.6, 
+            size_hint_y=None,
+            height=dp(40),
+            padding=[dp(8), dp(4)], 
+            orientation='vertical'
+        )
+        with label_container.canvas.before:
+            Color(*Colors.LIGHT_GRAY)
+            label_bg = RoundedRectangle(pos=label_container.pos, size=label_container.size, radius=[dp(8)])
+        label_container.bind(
+            pos=lambda inst, *a: setattr(label_bg, 'pos', inst.pos),
+            size=lambda inst, *a: setattr(label_bg, 'size', inst.size)
+        )
+        
         self.target_label = StyledLabel(
             text=f"{self.current_target}",
-            size_hint_x=0.6,
-            halign='center'
+            size_hint_y=None,
+            height=dp(32),
+            halign='center',
+            valign='middle'
         )
-        value_container.add_widget(self.target_label)
+        label_container.add_widget(self.target_label)
+        value_container.add_widget(label_container)
 
         self.set_button = StyledButton(
             text="Set",
             size_hint_x=0.4,
+            size_hint_y=None,
             height=dp(40),
             bg_color=Colors.ORANGE
         )
@@ -135,7 +157,9 @@ class SetTargetOption(BaseSettingsOption, BaseDisplayStyle):
             size_hint_y=None,
             height=dp(30),
             font_size='16sp',
-            bold=True
+            bold=True,
+            halign='center',
+            valign='middle'
         )
         section.add_widget(title)
 
@@ -146,19 +170,34 @@ class SetTargetOption(BaseSettingsOption, BaseDisplayStyle):
             spacing=dp(10)
         )
 
-        input_layout.add_widget(StyledLabel(text="Target:", size_hint_x=0.3, height=dp(40)))
+        input_layout.add_widget(StyledLabel(
+            text="Target:", 
+            size_hint_x=0.3, 
+            size_hint_y=None,
+            height=dp(40),
+            halign='center',
+            valign='middle'
+        ))
 
         self.manual_input = StyledTextInput(
             text=str(self.current_target),
             input_filter='int',
             multiline=False,
             size_hint_x=0.5,
-            halign='center',
-            height=dp(40)
+            size_hint_y=None,
+            height=dp(40),
+            halign='center'
         )
         input_layout.add_widget(self.manual_input)
 
-        input_layout.add_widget(StyledLabel(text="kcal", size_hint_x=0.2, height=dp(40)))
+        input_layout.add_widget(StyledLabel(
+            text="kcal", 
+            size_hint_x=0.2, 
+            size_hint_y=None,
+            height=dp(40),
+            halign='center',
+            valign='middle'
+        ))
 
         section.add_widget(input_layout)
         return section
@@ -181,15 +220,28 @@ class SetTargetOption(BaseSettingsOption, BaseDisplayStyle):
 
         # Gender
         gender_row = BoxLayout(orientation='horizontal', size_hint_y=None, height=dp(40), spacing=dp(10))
-        gender_row.add_widget(StyledLabel(text="Gender:", size_hint_x=0.35, height=dp(40)))
+        gender_row.add_widget(StyledLabel(
+            text="Gender:", 
+            size_hint_x=0.35, 
+            size_hint_y=None,
+            height=dp(40),
+            halign='center',
+            valign='middle'
+        ))
         self.gender_spinner = Spinner(
             text='Male',
             values=['Male', 'Female'],
             size_hint_x=0.45,
+            size_hint_y=None,
             height=dp(40)
         )
         gender_row.add_widget(self.gender_spinner)
-        gender_row.add_widget(StyledLabel(text="", size_hint_x=0.2, height=dp(40)))
+        gender_row.add_widget(StyledLabel(
+            text="", 
+            size_hint_x=0.2, 
+            size_hint_y=None,
+            height=dp(40)
+        ))
         form_layout.add_widget(gender_row)
 
         # Height
@@ -204,15 +256,28 @@ class SetTargetOption(BaseSettingsOption, BaseDisplayStyle):
 
         # Activity
         activity_row = BoxLayout(orientation='horizontal', size_hint_y=None, height=dp(40), spacing=dp(10))
-        activity_row.add_widget(StyledLabel(text="Activity:", size_hint_x=0.35, height=dp(40)))
+        activity_row.add_widget(StyledLabel(
+            text="Activity:", 
+            size_hint_x=0.35, 
+            size_hint_y=None,
+            height=dp(40),
+            halign='center',
+            valign='middle'
+        ))
         self.activity_spinner = Spinner(
             text='Moderate',
             values=['Sedentary', 'Light', 'Moderate', 'Active', 'Very Active'],
             size_hint_x=0.45,
+            size_hint_y=None,
             height=dp(40)
         )
         activity_row.add_widget(self.activity_spinner)
-        activity_row.add_widget(StyledLabel(text="", size_hint_x=0.2, height=dp(40)))
+        activity_row.add_widget(StyledLabel(
+            text="", 
+            size_hint_x=0.2, 
+            size_hint_y=None,
+            height=dp(40)
+        ))
         form_layout.add_widget(activity_row)
 
         # Weight loss
@@ -248,18 +313,68 @@ class SetTargetOption(BaseSettingsOption, BaseDisplayStyle):
 
     def create_form_row(self, label_text, unit_text):
         layout = BoxLayout(orientation='horizontal', size_hint_y=None, height=dp(40), spacing=dp(10))
-        layout.add_widget(StyledLabel(text=label_text, size_hint_x=0.35, height=dp(40)))
-        input = StyledTextInput(input_filter='int', multiline=False, size_hint_x=0.45, height=dp(40), halign='center')
+        
+        layout.add_widget(StyledLabel(
+            text=label_text, 
+            size_hint_x=0.35, 
+            size_hint_y=None,
+            height=dp(40),
+            halign='center',
+            valign='middle'
+        ))
+        
+        input = StyledTextInput(
+            input_filter='int', 
+            multiline=False, 
+            size_hint_x=0.45, 
+            size_hint_y=None,
+            height=dp(40), 
+            halign='center'
+        )
         layout.add_widget(input)
-        layout.add_widget(StyledLabel(text=unit_text, size_hint_x=0.2, height=dp(40)))
+        
+        layout.add_widget(StyledLabel(
+            text=unit_text, 
+            size_hint_x=0.2, 
+            size_hint_y=None,
+            height=dp(40),
+            halign='center',
+            valign='middle'
+        ))
+        
         return {'layout': layout, 'input': input}
 
     def create_weight_loss_row(self, label_text, unit_text):
         layout = BoxLayout(orientation='horizontal', size_hint_y=None, height=dp(40), spacing=dp(10))
-        layout.add_widget(StyledLabel(text=label_text, size_hint_x=0.35, height=dp(40)))
-        input = StyledTextInput(input_filter='float', multiline=False, size_hint_x=0.35, height=dp(40), halign='center')
+        
+        layout.add_widget(StyledLabel(
+            text=label_text, 
+            size_hint_x=0.35, 
+            size_hint_y=None,
+            height=dp(40),
+            halign='center',
+            valign='middle'
+        ))
+        
+        input = StyledTextInput(
+            input_filter='float', 
+            multiline=False, 
+            size_hint_x=0.35, 
+            size_hint_y=None,
+            height=dp(40), 
+            halign='center'
+        )
         layout.add_widget(input)
-        layout.add_widget(StyledLabel(text=unit_text, size_hint_x=0.3, height=dp(40)))
+        
+        layout.add_widget(StyledLabel(
+            text=unit_text, 
+            size_hint_x=0.3, 
+            size_hint_y=None,
+            height=dp(40),
+            halign='center',
+            valign='middle'
+        ))
+        
         return {'layout': layout, 'input': input}
 
     def calculate_target(self, instance):
@@ -289,8 +404,7 @@ class SetTargetOption(BaseSettingsOption, BaseDisplayStyle):
             min_calories = 1500 if gender == 'Male' else 1200
 
             if calculated_target < min_calories:
-                self.calculated_result.text = f"Warning: Target too low! Minimum recommended: {min_calories} kcal/day"
-                calculated_target = min_calories
+                self.calculated_result.text = f"Warning: Target too low!\nRecommended: {min_calories} kcal/day"
             else:
                 self.calculated_result.text = f"Calculated target: {calculated_target} kcal/day\n(For {weight_loss_goal} kg/week loss)"
 
